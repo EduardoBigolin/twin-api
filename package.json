@@ -1,0 +1,35 @@
+{
+  "name": "twin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest",
+    "db:migrate": "npx prisma migrate dev --name init",
+    "db:generate": "npx prisma generate",
+    "db:studio": "npx prisma studio",
+    "db:seed": "ts-node ./prisma/seed.ts"
+  },
+  "prisma": {
+    "schema": "./src/infrastructure/db/prisma/schema.prisma"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.1",
+    "@types/node": "^20.2.4",
+    "@types/uuid": "^9.0.1",
+    "prisma": "^4.14.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4",
+    "vitest": "^0.31.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.14.1",
+    "@types/bcrypt": "^5.0.0",
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "uuid": "^9.0.0"
+  }
+}
