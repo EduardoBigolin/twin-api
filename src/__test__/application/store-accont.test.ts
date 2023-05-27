@@ -16,6 +16,10 @@ test("Create User with valid data", async () => {
     password: input.password,
   });
   expect(useCase).toBeTruthy();
+  expect(useCase.statusCode).toBe(201);
+  expect(useCase.body).toBeTypeOf("object");
+  expect(useCase.body.token).toBeTruthy();
+  expect(useCase.body.user).toBeTruthy();
 });
 
 test("Create User with valid data", async () => {

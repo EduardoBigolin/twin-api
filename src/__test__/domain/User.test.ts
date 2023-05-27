@@ -18,8 +18,8 @@ test("Create User with valid data", async () => {
   expect(user).toBeTruthy();
   expect(user.name).toBe(input.name);
   expect(user.email.getEmail()).toBe(input.email);
-  const password = await user.password.hashPassword();
-  const compare = await user.password.comparePassword(password);
+  await user.password.hashPassword();
+  const compare = await user.password.comparePassword(input.password);
   expect(compare).toBeTruthy();
 });
 
@@ -54,7 +54,7 @@ test("Should return error if password invalid", () => {
     });
   }).toThrow("Invalid password");
 });
-
+import bcrypt from "bcrypt";
 test("Should return password hash if password is valid", async () => {
   const input = {
     name: faker.name.fullName(),
@@ -67,9 +67,8 @@ test("Should return password hash if password is valid", async () => {
     email: new Email(input.email),
     password: new Password(input.password),
   });
-  const userPassword = await user.password.hashPassword();
-  const comparePassword = await user.password.comparePassword(userPassword);
-
+  await user.password.hashPassword();
+  const comparePassword = await user.password.comparePassword(input.password);
   expect(comparePassword).toBeTruthy();
 });
 
@@ -91,6 +90,7 @@ test("Create user with Id", async () => {
   expect(user.name).toBe(input.name);
   expect(user.email.getEmail()).toBe(input.email);
   const password = await user.password.hashPassword();
-  const compare = await user.password.comparePassword(password);
+  const compare = await user.password.comparePassword(input.password);
+
   expect(compare).toBeTruthy();
 });

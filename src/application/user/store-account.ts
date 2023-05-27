@@ -3,7 +3,7 @@ import { Exaction } from "../../domain/common/Exaction";
 import { User } from "../../domain/user/User";
 import { Email } from "../../domain/user/User-email";
 import { Password } from "../../domain/user/User-password";
-import { HandleReturn, StatusCode } from "../common/handleReturn";
+import { HandleCode, HandleReturn } from "../common/handleReturn";
 
 interface saveUserDto {
   name: string;
@@ -34,22 +34,19 @@ export class StoreAccount {
       }
 
       const userCreated = await this.userRepository.create(user);
-
+      const token = userCreated.getToken();
+      const output = {
+        user: userCreated,
+        token,
+      };
       return {
-        statusCode: StatusCode.CREATED,
-        body: userCreated,
+        statusCode: HandleCode.CREATED,
+        body: output,
       };
     } catch (error: any) {
-      if (error instanceof Exaction) {
-        return {
-          statusCode: StatusCode.BAD_REQUEST,
-          body: error.message,
-        };
-      }
-      console.error(error);
       return {
-        statusCode: StatusCode.INTERNAL_SERVER_ERROR,
-        body: "Server Error",
+        statusCode: error.statusCode,
+        body: error.message,
       };
     }
   }

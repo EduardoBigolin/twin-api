@@ -3,26 +3,31 @@ import { User } from "../../domain/user/User";
 import { Email } from "../../domain/user/User-email";
 import { Password } from "../../domain/user/User-password";
 import { IUserRepository } from "./user.repository";
+import { Exaction, StatusCode } from "../../domain/common/Exaction";
 
 export class UserPrismaRepository implements IUserRepository {
   private prisma = new PrismaClient();
 
   async create(user: User): Promise<User> {
-    const SavedUser = await this.prisma.user.create({
-      data: {
-        id: user.getId(),
-        name: user.name,
-        email: user.email.getEmail(),
-        password: await user.password.hashPassword(),
-      },
-    });
-    const userReturn = new User({
-      id: SavedUser.id,
-      name: SavedUser.name,
-      email: new Email(SavedUser.email),
-      password: new Password(SavedUser.password),
-    });
-    return userReturn;
+    try {
+      const SavedUser = await this.prisma.user.create({
+        data: {
+          id: user.getId(),
+          name: user.name,
+          email: user.email.getEmail(),
+          password: await user.password.hashPassword(),
+        },
+      });
+      const userReturn = new User({
+        id: SavedUser.id,
+        name: SavedUser.name,
+        email: new Email(SavedUser.email),
+        password: new Password(SavedUser.password),
+      });
+      return userReturn;
+    } catch (error: any) {
+      throw new Exaction(error.message, StatusCode.INTERNAL_SERVER);
+    }
   }
 
   async findByEmail(email: string): Promise<User | null> {

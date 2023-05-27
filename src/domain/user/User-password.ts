@@ -1,4 +1,4 @@
-import { Exaction } from "../common/Exaction";
+import { Exaction, StatusCode } from "../common/Exaction";
 import { Hash } from "../utils/hash";
 
 export class Password {
@@ -9,18 +9,22 @@ export class Password {
     this.password = password;
   }
   async hashPassword(): Promise<string> {
-    return await Hash.getHash(this.password);
+    const passwordHash = await Hash.getHash(this.password);
+    this.password = passwordHash;
+    return passwordHash;
   }
-  async comparePassword(hash: string): Promise<boolean> {
-    return await Hash.compareHash(this.password, hash);
+  async comparePassword(password: string): Promise<boolean> {
+    console.log(password, this.password);
+
+    return await Hash.compareHash(password, this.password);
   }
   public validate(password: string) {
     if (!password) {
-      throw new Exaction("Password is required");
+      throw new Exaction("Password is required", StatusCode.BAD_REQUEST);
     }
 
     if (password.length < 8) {
-      throw new Exaction("Invalid password");
+      throw new Exaction("Invalid password", StatusCode.BAD_REQUEST);
     }
   }
 }
