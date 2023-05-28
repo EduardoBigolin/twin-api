@@ -2,8 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import { User } from "../../domain/user/User";
 import { Email } from "../../domain/user/User-email";
 import { Password } from "../../domain/user/User-password";
-import { IUserRepository } from "./user.repository";
 import { Exaction, StatusCode } from "../../domain/common/Exaction";
+import { IUserRepository } from "./user-repository";
 
 export class UserPrismaRepository implements IUserRepository {
   private prisma = new PrismaClient();
@@ -16,6 +16,7 @@ export class UserPrismaRepository implements IUserRepository {
           name: user.name,
           email: user.email.getEmail(),
           password: await user.password.hashPassword(),
+          isAuthenticated: user.isAuthenticated,
         },
       });
       const userReturn = new User({
@@ -23,6 +24,7 @@ export class UserPrismaRepository implements IUserRepository {
         name: SavedUser.name,
         email: new Email(SavedUser.email),
         password: new Password(SavedUser.password),
+        isAuthenticated: SavedUser.isAuthenticated,
       });
       return userReturn;
     } catch (error: any) {
@@ -44,6 +46,7 @@ export class UserPrismaRepository implements IUserRepository {
       name: user.name,
       email: new Email(user.email),
       password: new Password(user.password),
+      isAuthenticated: user.isAuthenticated,
     });
     return userReturn;
   }

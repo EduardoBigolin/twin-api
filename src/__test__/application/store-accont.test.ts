@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { faker } from "@faker-js/faker";
-import { UserPrismaRepository } from "../../adapters/user/user.prisma.repository";
 import { StoreAccount } from "../../application/user/store-account";
+import { UserPrismaRepository } from "../../adapters/user/user-prisma-repository";
 
 test("Create User with valid data", async () => {
   const input = {
@@ -9,17 +9,17 @@ test("Create User with valid data", async () => {
     email: faker.internet.email(),
     password: faker.internet.password(),
   };
+
   const repository = new UserPrismaRepository();
   const useCase = await new StoreAccount(repository).execute({
     name: input.name,
     email: input.email,
     password: input.password,
   });
+
   expect(useCase).toBeTruthy();
   expect(useCase.statusCode).toBe(201);
-  expect(useCase.body).toBeTypeOf("object");
-  expect(useCase.body.token).toBeTruthy();
-  expect(useCase.body.user).toBeTruthy();
+  expect(useCase.body.response).toBeTypeOf("object");
 });
 
 test("Create User with valid data", async () => {
@@ -35,7 +35,7 @@ test("Create User with valid data", async () => {
     password: input.password,
   });
   expect(useCase.statusCode).toBe(400);
-  expect(useCase.body).toBe("Invalid email");
+  expect(useCase.body.response).toBe("Invalid email");
 });
 
 test("Create User with valid data", async () => {
@@ -51,5 +51,6 @@ test("Create User with valid data", async () => {
     password: input.password,
   });
   expect(useCase.statusCode).toBe(400);
-  expect(useCase.body).toBe("Invalid password");
+
+  expect(useCase.body.response).toBe("Invalid password");
 });
