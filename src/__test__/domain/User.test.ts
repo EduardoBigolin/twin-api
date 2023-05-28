@@ -72,6 +72,22 @@ test("Should return password hash if password is valid", async () => {
   expect(comparePassword).toBeTruthy();
 });
 
+test("Should return error if name is invalid", async () => {
+  const input = {
+    id: faker.datatype.uuid(),
+    name: null as any,
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+  };
+  expect(() => {
+    new User({
+      name: input.name,
+      email: new Email(input.email),
+      password: new Password(input.password),
+    });
+  }).toThrow("User name is required");
+});
+
 test("Create user with Id", async () => {
   const input = {
     id: faker.datatype.uuid(),
@@ -89,7 +105,7 @@ test("Create user with Id", async () => {
   expect(user.getId()).toBe(input.id);
   expect(user.name).toBe(input.name);
   expect(user.email.getEmail()).toBe(input.email);
-  const password = await user.password.hashPassword();
+  await user.password.hashPassword();
   const compare = await user.password.comparePassword(input.password);
 
   expect(compare).toBeTruthy();

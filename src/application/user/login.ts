@@ -1,6 +1,7 @@
-import { IUserRepository } from "../../adapters/user/user.repository";
+import { IUserRepository } from "../../adapters/user/user-repository";
 import { Exaction, StatusCode } from "../../domain/common/Exaction";
 import { HandleCode, HandleReturn } from "../common/handleReturn";
+import { UserExistService } from "./services/user-exist";
 
 interface userAuth {
   email: string;
@@ -15,20 +16,22 @@ export class Login {
   }
   async execute(userData: userAuth): Promise<HandleReturn> {
     try {
-      const user = await this.userRepository.findByEmail(userData.email);
+      const user = await new UserExistService(this.userRepository).execute(
+        userData.email
+      );
       if (!user) {
-        throw new Exaction("User not found", StatusCode.BAD_REQUEST);
+        throw new Exaction("Invalid email or password", StatusCode.BAD_REQUEST);
       }
+
       const userAuth = await user.password.comparePassword(userData.password);
       if (!userAuth) {
         throw new Exaction("Invalid email or password", StatusCode.BAD_REQUEST);
       }
-      const token = await user.getToken();
 
       const output = {
-        user,
-        token,
+        response: { user },
       };
+
       return {
         statusCode: HandleCode.OK,
         body: output,
@@ -36,7 +39,7 @@ export class Login {
     } catch (error: any) {
       return {
         statusCode: error.statusCode,
-        body: error.message,
+        body: { response: error.message },
       };
     }
   }
