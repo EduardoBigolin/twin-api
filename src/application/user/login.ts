@@ -1,7 +1,7 @@
 import { IUserRepository } from "../../adapters/user/user-repository";
 import { Exaction, StatusCode } from "../../domain/common/Exaction";
 import { HandleCode, HandleReturn } from "../common/handleReturn";
-import { UserExistService } from "./services/user-exist";
+import { UserExistEmailService } from "./services/user-exist-email";
 
 interface userAuth {
   email: string;
@@ -16,7 +16,7 @@ export class Login {
   }
   async execute(userData: userAuth): Promise<HandleReturn> {
     try {
-      const user = await new UserExistService(this.userRepository).execute(
+      const user = await new UserExistEmailService(this.userRepository).execute(
         userData.email
       );
       if (!user) {

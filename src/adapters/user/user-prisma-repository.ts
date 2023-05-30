@@ -6,6 +6,25 @@ import { Exaction, StatusCode } from "../../domain/common/Exaction";
 import { IUserRepository } from "./user-repository";
 
 export class UserPrismaRepository implements IUserRepository {
+  async updateAuthenticated(id: string): Promise<User> {
+    const user = await this.prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        isAuthenticated: true,
+      },
+    });
+    const userReturn = new User({
+      id: user.id,
+      name: user.name,
+      email: new Email(user.email),
+      password: new Password(user.password),
+      isAuthenticated: user.isAuthenticated,
+    });
+
+    return userReturn;
+  }
   private prisma = new PrismaClient();
 
   async create(user: User): Promise<User> {
@@ -50,8 +69,23 @@ export class UserPrismaRepository implements IUserRepository {
     });
     return userReturn;
   }
-  findById(id: string): Promise<User> {
-    throw new Error("Method not implemented.");
+  async findById(id: string): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!user) {
+      return null;
+    }
+    const userReturn = new User({
+      id: user.id,
+      name: user.name,
+      email: new Email(user.email),
+      password: new Password(user.password),
+      isAuthenticated: user.isAuthenticated,
+    });
+    return userReturn;
   }
   update(user: User): Promise<User> {
     throw new Error("Method not implemented.");

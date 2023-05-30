@@ -14,8 +14,6 @@ export class Password {
     return passwordHash;
   }
   async comparePassword(password: string): Promise<boolean> {
-    console.log(password, this.password);
-
     return await Hash.compareHash(password, this.password);
   }
   public validate(password: string) {

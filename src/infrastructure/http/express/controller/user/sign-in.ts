@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { UserPrismaRepository } from "../../../../../adapters/user/user.prisma.repository";
 import { Login } from "../../../../../application/user/login";
+import { UserPrismaRepository } from "../../../../../adapters/user/user-prisma-repository";
 
 export class signInController {
   static async execute(req: Request, res: Response) {
