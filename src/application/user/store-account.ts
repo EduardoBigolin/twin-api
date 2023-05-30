@@ -5,7 +5,7 @@ import { Email } from "../../domain/user/User-email";
 import { Password } from "../../domain/user/User-password";
 import { HandleCode, HandleReturn } from "../common/handleReturn";
 import { HandleEmail } from "./services/handle-email";
-import { UserExistService } from "./services/user-exist";
+import { UserExistEmailService } from "./services/user-exist-email";
 
 interface saveUserDto {
   name: string;
@@ -29,7 +29,7 @@ export class StoreAccount {
         isAuthenticated: false,
       });
 
-      const userExists = await new UserExistService(
+      const userExists = await new UserExistEmailService(
         this.userRepository
       ).execute(user.email.getEmail());
 
@@ -42,6 +42,7 @@ export class StoreAccount {
         user: userCreated,
       };
       await HandleEmail.createUser({
+        name: user.name,
         email: user.email.getEmail(),
         id: user.getId(),
       });

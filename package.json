@@ -10,7 +10,7 @@
     "db:studio": "npx prisma studio",
     "db:seed": "ts-node ./prisma/seed.ts",
     "db:reset": "npx prisma db push --force-reset && npx prisma db push",
-    "server:dev": "npm run db:generate &&  npm run db:reset && tsx src/infrastructure/http/main.ts"
+    "server:dev": "npm run db:generate &&  npm run db:reset && tsx --watch src/infrastructure/http/main.ts"
   },
   "prisma": {
     "schema": "./src/infrastructure/db/prisma/schema.prisma"
