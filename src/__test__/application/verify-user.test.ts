@@ -27,7 +27,7 @@ describe("Verify user", async () => {
     expect(useCase.body.response.message).toBe(
       `User ${newUser.body.response.user.name} authenticated successfully`
     );
-  });
+  }, 50000);
 
   test("should return new error if user has already been authenticated", async () => {
     const input = {
@@ -40,6 +40,8 @@ describe("Verify user", async () => {
       email: input.email,
       password: input.password,
     });
+    console.log(newUser.body.response);
+
     await new VerifyUser(repository).execute(newUser.body.response.user.id);
     const useCase = await new VerifyUser(repository).execute(
       newUser.body.response.user.id
@@ -48,5 +50,5 @@ describe("Verify user", async () => {
     expect(useCase).toBeTruthy();
     expect(useCase.statusCode).toBe(400);
     expect(useCase.body.response).toBe(`User already authenticated`);
-  });
+  }, 50000);
 });

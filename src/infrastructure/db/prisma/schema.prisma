@@ -17,3 +17,15 @@ model User {
   password        String
   isAuthenticated Boolean
 }
+
+model Product {
+  id          String   @id
+  name        String
+  price       Float
+  description String
+  photo       String
+  category    String
+  quantity    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

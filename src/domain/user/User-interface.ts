@@ -6,5 +6,5 @@ export interface IUser {
   name: string;
   email: Email;
   password: Password;
-  isAuthenticated: boolean;
+  isAuthenticated?: boolean;
 }

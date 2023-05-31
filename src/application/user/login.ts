@@ -27,9 +27,15 @@ export class Login {
       if (!userAuth) {
         throw new Exaction("Invalid email or password", StatusCode.BAD_REQUEST);
       }
-
+      const token = user.getToken();
       const output = {
-        response: { user },
+        response: {
+          token: token,
+          user: {
+            name: user.name,
+            email: user.email.getEmail(),
+          },
+        },
       };
 
       return {

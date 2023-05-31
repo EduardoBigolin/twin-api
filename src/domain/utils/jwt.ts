@@ -5,7 +5,7 @@ import { userPayLoad } from "../user/User-token";
 export class Jwt {
   public static generateToken(payLoad: userPayLoad) {
     return jwt.sign(payLoad, environment.jwtSecret, {
-      expiresIn: "1d",
+      expiresIn: environment.jwtExpiresIn,
     });
   }
   public static verifyToken(token: string) {
