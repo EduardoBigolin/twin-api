@@ -35,6 +35,7 @@ test("Should return error if invalid email", () => {
       name: input.name,
       email: new Email(input.email),
       password: new Password(input.password),
+      isAuthenticated: false,
     });
   }).toThrow("Invalid email");
 });

@@ -30,7 +30,7 @@ export class User extends Entity {
     }
   }
 
-  public async getToken() {
+  public getToken() {
     if (!this.isAuthenticated)
       throw new Exaction("User is not authenticated", StatusCode.UNAUTHORIZED);
     this.token = new Token({
