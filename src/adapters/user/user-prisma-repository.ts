@@ -6,6 +6,8 @@ import { Exaction, StatusCode } from "../../domain/common/Exaction";
 import { IUserRepository } from "./user-repository";
 
 export class UserPrismaRepository implements IUserRepository {
+  private prisma = new PrismaClient();
+
   async updateAuthenticated(id: string): Promise<User> {
     const user = await this.prisma.user.update({
       where: {
@@ -25,7 +27,6 @@ export class UserPrismaRepository implements IUserRepository {
 
     return userReturn;
   }
-  private prisma = new PrismaClient();
 
   async create(user: User): Promise<User> {
     try {

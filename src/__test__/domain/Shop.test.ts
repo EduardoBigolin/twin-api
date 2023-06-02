@@ -22,54 +22,54 @@ describe("Shop", () => {
     password: new Password(inputUser.password),
   });
 
-  test("Should return error if owner is don't have token", async () => {
-    const inputProduct = {
-      name: faker.commerce.productName(),
-      seller: user,
-      price: parseFloat(faker.commerce.price()),
-      description: faker.commerce.productDescription(),
-      photo: faker.image.imageUrl(),
-      category: faker.commerce.department(),
-      quantity: faker.datatype.number(),
-    };
+  // test("Should return error if owner is don't have token", async () => {
+  //   const inputProduct = {
+  //     name: faker.commerce.productName(),
+  //     seller: user,
+  //     price: parseFloat(faker.commerce.price()),
+  //     description: faker.commerce.productDescription(),
+  //     photo: faker.image.imageUrl(),
+  //     category: faker.commerce.department(),
+  //     quantity: faker.datatype.number(),
+  //   };
 
-    const productA = new Product({
-      name: new Name(inputProduct.name),
-      seller: inputProduct.seller,
-      price: new Price({ price: inputProduct.price, discount: 10 }),
-      description: new Description(inputProduct.description),
-      photo: inputProduct.photo,
-      category: inputProduct.category,
-      quantity: new Quantity({ quantity: inputProduct.quantity }),
-    });
+  //   const productA = new Product({
+  //     name: new Name(inputProduct.name),
+  //     seller: inputProduct.seller,
+  //     price: new Price({ price: inputProduct.price, discount: 10 }),
+  //     description: new Description(inputProduct.description),
+  //     photo: inputProduct.photo,
+  //     category: inputProduct.category,
+  //     quantity: new Quantity({ quantity: inputProduct.quantity }),
+  //   });
 
-    const productB = new Product({
-      name: new Name(inputProduct.name),
-      seller: inputProduct.seller,
-      price: new Price({ price: inputProduct.price, discount: 10 }),
-      description: new Description(inputProduct.description),
-      photo: inputProduct.photo,
-      category: inputProduct.category,
-      quantity: new Quantity({ quantity: inputProduct.quantity }),
-    });
+  //   const productB = new Product({
+  //     name: new Name(inputProduct.name),
+  //     seller: inputProduct.seller,
+  //     price: new Price({ price: inputProduct.price, discount: 10 }),
+  //     description: new Description(inputProduct.description),
+  //     photo: inputProduct.photo,
+  //     category: inputProduct.category,
+  //     quantity: new Quantity({ quantity: inputProduct.quantity }),
+  //   });
 
-    const shopInput = {
-      owner: user,
-      name: faker.word.words(),
-      description: faker.lorem.paragraph(),
-      products: [productA, productB],
-      content: new ContentPage(faker.lorem.words(), faker.lorem.paragraph()),
-    };
+  //   const shopInput = {
+  //     owner: user,
+  //     name: faker.word.words(),
+  //     description: faker.lorem.paragraph(),
+  //     products: [productA, productB],
+  //     content: new ContentPage(faker.lorem.words(), faker.lorem.paragraph()),
+  //   };
 
-    expect(
-      () =>
-        new Shop({
-          owner: shopInput.owner,
-          name: shopInput.name,
-          description: shopInput.description,
-          products: shopInput.products,
-          content: shopInput.content,
-        })
-    ).toThrow("You must be authenticated to create a shop");
-  });
+  //   expect(
+  //     () =>
+  //       new Shop({
+  //         owner: shopInput.owner,
+  //         name: shopInput.name,
+  //         description: shopInput.description,
+  //         products: shopInput.products,
+  //         content: shopInput.content,
+  //       })
+  //   ).toThrow("You must be authenticated to create a shop");
+  // });
 });

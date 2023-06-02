@@ -9,7 +9,7 @@ interface IShop {
   owner: User;
   name: string;
   description: string;
-  products: Product[];
+  products?: Product[];
   content: ContentPage;
 }
 
@@ -25,17 +25,10 @@ export class Shop extends Entity {
     this.owner = shop.owner;
     this.name = shop.name;
     this.description = shop.description;
-    this.products = shop.products;
+    this.products = [];
     this.content = shop.content;
   }
-  private validate(shop: IShop) {
-    if (!shop.owner.token) {
-      throw new Exaction(
-        "You must be authenticated to create a shop",
-        StatusCode.UNAUTHORIZED
-      );
-    }
-  }
+  private validate(shop: IShop) {}
 
   public addProduct(product: Product) {
     if (!this.owner.isAuthenticated)

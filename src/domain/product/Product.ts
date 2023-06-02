@@ -1,5 +1,6 @@
 import { Entity } from "../common/Entity";
 import { Exaction, StatusCode } from "../common/Exaction";
+import { Shop } from "../shop/Shop";
 import { User } from "../user/User";
 import { Description, Name } from "./product-name";
 import { Price } from "./product-price";
@@ -8,7 +9,7 @@ import { Quantity } from "./product-quantity";
 export interface IProduct {
   id?: string;
   name: Name;
-  seller: User;
+  shopId: string;
   price: Price;
   description: Description;
   photo: string;
@@ -18,7 +19,7 @@ export interface IProduct {
 
 export class Product extends Entity {
   public name: Name;
-  public seller: User;
+  public shopId: string;
   public price: Price;
   public description: Description;
   public photo: string;
@@ -29,7 +30,7 @@ export class Product extends Entity {
     super();
     this.id = payLoad.id ? payLoad.id : this.id;
     this.name = payLoad.name;
-    this.seller = payLoad.seller;
+    this.shopId = payLoad.shopId;
     this.price = payLoad.price;
     this.description = payLoad.description;
     this.photo = payLoad.photo;
