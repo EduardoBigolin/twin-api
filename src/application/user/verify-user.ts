@@ -1,5 +1,5 @@
 import { IUserRepository } from "../../adapters/user/user-repository";
-import { Exaction, StatusCode } from "../../domain/common/Exaction";
+import { Exception, StatusCode } from "../../domain/common/Exception";
 import { HandleCode } from "../common/handleReturn";
 import { HandleEmail } from "./services/handle-email";
 
@@ -13,10 +13,10 @@ export class VerifyUser {
     try {
       const user = await this.userRepository.findById(id);
       if (!user) {
-        throw new Exaction("User not found", StatusCode.BAD_REQUEST);
+        throw new Exception("User not found", StatusCode.BAD_REQUEST);
       }
       if (user.isAuthenticated) {
-        throw new Exaction(
+        throw new Exception(
           "User already authenticated",
           StatusCode.BAD_REQUEST
         );

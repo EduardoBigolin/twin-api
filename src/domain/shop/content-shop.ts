@@ -1,4 +1,4 @@
-import { Exaction, StatusCode } from "../common/Exaction";
+import { Exception, StatusCode } from "../common/Exception";
 
 export class ContentPage {
   public title: string;
@@ -6,10 +6,10 @@ export class ContentPage {
 
   private validate(title: string, content: string) {
     if (!title) {
-      throw new Exaction("Title is required", StatusCode.BAD_REQUEST);
+      throw new Exception("Title is required", StatusCode.BAD_REQUEST);
     }
     if (!content) {
-      throw new Exaction("Content is required", StatusCode.BAD_REQUEST);
+      throw new Exception("Content is required", StatusCode.BAD_REQUEST);
     }
   }
 

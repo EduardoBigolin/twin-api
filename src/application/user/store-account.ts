@@ -1,5 +1,5 @@
 import { IUserRepository } from "../../adapters/user/user-repository";
-import { Exaction, StatusCode } from "../../domain/common/Exaction";
+import { Exception, StatusCode } from "../../domain/common/Exception";
 import { User } from "../../domain/user/User";
 import { Email } from "../../domain/user/User-email";
 import { Password } from "../../domain/user/User-password";
@@ -34,7 +34,7 @@ export class StoreAccount {
       ).execute(user.email.getEmail());
 
       if (userExists) {
-        throw new Exaction("User already exists", StatusCode.BAD_REQUEST);
+        throw new Exception("User already exists", StatusCode.BAD_REQUEST);
       }
 
       const userCreated = await this.userRepository.create(user);

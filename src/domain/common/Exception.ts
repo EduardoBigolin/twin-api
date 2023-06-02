@@ -7,7 +7,7 @@ export enum StatusCode {
   CONFLICT = 409,
 }
 
-export class Exaction extends Error {
+export class Exception extends Error {
   constructor(public message: string, public statusCode: StatusCode) {
     super();
     this.message = message;

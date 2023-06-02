@@ -1,7 +1,4 @@
 import { Entity } from "../common/Entity";
-import { Exaction, StatusCode } from "../common/Exaction";
-import { Shop } from "../shop/Shop";
-import { User } from "../user/User";
 import { Description, Name } from "./product-name";
 import { Price } from "./product-price";
 import { Quantity } from "./product-quantity";

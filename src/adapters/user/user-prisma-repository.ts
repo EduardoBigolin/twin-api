@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { User } from "../../domain/user/User";
 import { Email } from "../../domain/user/User-email";
 import { Password } from "../../domain/user/User-password";
-import { Exaction, StatusCode } from "../../domain/common/Exaction";
+import { Exception, StatusCode } from "../../domain/common/Exception";
 import { IUserRepository } from "./user-repository";
 
 export class UserPrismaRepository implements IUserRepository {
@@ -48,7 +48,7 @@ export class UserPrismaRepository implements IUserRepository {
       });
       return userReturn;
     } catch (error: any) {
-      throw new Exaction(error.message, StatusCode.INTERNAL_SERVER);
+      throw new Exception(error.message, StatusCode.INTERNAL_SERVER);
     }
   }
 

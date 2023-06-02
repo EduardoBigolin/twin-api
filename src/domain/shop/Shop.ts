@@ -1,6 +1,6 @@
 import { validate } from "uuid";
 import { Entity } from "../common/Entity";
-import { Exaction, StatusCode } from "../common/Exaction";
+import { Exception, StatusCode } from "../common/Exception";
 import { Product } from "../product/Product";
 import { User } from "../user/User";
 import { ContentPage } from "./content-shop";
@@ -32,7 +32,7 @@ export class Shop extends Entity {
 
   public addProduct(product: Product) {
     if (!this.owner.isAuthenticated)
-      new Exaction(
+      new Exception(
         "You must be authenticated to add a product to your shop",
         StatusCode.UNAUTHORIZED
       );
@@ -40,7 +40,7 @@ export class Shop extends Entity {
   }
 
   public removeProduct(product: Product) {
-    new Exaction(
+    new Exception(
       "You must be authenticated to add a product to your shop",
       StatusCode.UNAUTHORIZED
     );
