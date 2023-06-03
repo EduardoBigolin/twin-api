@@ -1,4 +1,5 @@
-import { Exception, StatusCode } from "../common/Exception";
+import { Exception } from "../common/Exception";
+import { StatusCode } from "../common/status-code";
 
 export interface IPrice {
   price: number;
@@ -13,7 +14,7 @@ export class Price {
     this.price = payLoad.price;
     this.discount = payLoad.discount ? payLoad.discount : undefined;
   }
-  
+
   validate(payLoad: IPrice) {
     if (!payLoad.price) {
       throw new Exception("Price is required", StatusCode.BAD_REQUEST);
@@ -30,7 +31,6 @@ export class Price {
 
   getDiscountedPrice() {
     if (this.discount) {
-      console.log(this.price - (this.price * this.discount) / 100);
       return this.price - (this.price * this.discount) / 100;
     }
     return this.price;

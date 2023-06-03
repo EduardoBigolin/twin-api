@@ -9,8 +9,8 @@ export interface IProduct {
   shopId: string;
   price: Price;
   description: Description;
-  photo: string;
-  category: string;
+  photo?: string;
+  category?: string;
   quantity: Quantity;
 }
 
@@ -19,8 +19,8 @@ export class Product extends Entity {
   public shopId: string;
   public price: Price;
   public description: Description;
-  public photo: string;
-  public category: string;
+  public photo?: string;
+  public category?: string;
   public quantity: Quantity;
 
   constructor(payLoad: IProduct) {

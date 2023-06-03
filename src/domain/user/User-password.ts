@@ -1,4 +1,5 @@
-import { Exception, StatusCode } from "../common/Exception";
+import { Exception } from "../common/Exception";
+import { StatusCode } from "../common/status-code";
 import { Hash } from "../utils/hash";
 
 export class Password {

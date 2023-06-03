@@ -1,5 +1,6 @@
 import { Entity } from "../common/Entity";
-import { Exception, StatusCode } from "../common/Exception";
+import { Exception } from "../common/Exception";
+import { StatusCode } from "../common/status-code";
 import { Email } from "./User-email";
 import { IUser } from "./User-interface";
 import { Password } from "./User-password";

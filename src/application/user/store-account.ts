@@ -1,9 +1,10 @@
 import { IUserRepository } from "../../adapters/user/user-repository";
-import { Exception, StatusCode } from "../../domain/common/Exception";
+import { Exception } from "../../domain/common/Exception";
+import { StatusCode } from "../../domain/common/status-code";
 import { User } from "../../domain/user/User";
 import { Email } from "../../domain/user/User-email";
 import { Password } from "../../domain/user/User-password";
-import { HandleCode, HandleReturn } from "../common/handleReturn";
+import { HandleReturn } from "../common/handleReturn";
 import { HandleEmail } from "./services/handle-email";
 import { UserExistEmailService } from "./services/user-exist-email";
 
@@ -41,13 +42,13 @@ export class StoreAccount {
       const output = {
         user: userCreated,
       };
-      await HandleEmail.createUser({
-        name: user.name,
-        email: user.email.getEmail(),
-        id: user.getId(),
-      });
+      // await HandleEmail.createUser({
+      //   name: user.name,
+      //   email: user.email.getEmail(),
+      //   id: user.getId(),
+      // });
       return {
-        statusCode: HandleCode.CREATED,
+        statusCode: StatusCode.CREATED,
         body: { response: output },
       };
     } catch (error: any) {

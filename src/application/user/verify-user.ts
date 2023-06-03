@@ -1,6 +1,6 @@
 import { IUserRepository } from "../../adapters/user/user-repository";
-import { Exception, StatusCode } from "../../domain/common/Exception";
-import { HandleCode } from "../common/handleReturn";
+import { Exception } from "../../domain/common/Exception";
+import { StatusCode } from "../../domain/common/status-code";
 import { HandleEmail } from "./services/handle-email";
 
 export class VerifyUser {
@@ -24,12 +24,12 @@ export class VerifyUser {
 
       await this.userRepository.updateAuthenticated(id);
 
-      await HandleEmail.authenticatedUser({
-        email: user.email.getEmail(),
-        name: user.name,
-      });
+      // await HandleEmail.authenticatedUser({
+      //   email: user.email.getEmail(),
+      //   name: user.name,
+      // });
       return {
-        statusCode: HandleCode.OK,
+        statusCode: StatusCode.OK,
         body: {
           response: {
             message: `User ${user.name} authenticated successfully`,

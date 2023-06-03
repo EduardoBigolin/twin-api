@@ -1,14 +1,11 @@
 import { IShopRepository } from "../../adapters/shop/shop-repository";
 import { IUserRepository } from "../../adapters/user/user-repository";
-import { Product } from "../../domain/product/Product";
-import { Description, Name } from "../../domain/product/product-name";
-import { Price } from "../../domain/product/product-price";
-import { Quantity } from "../../domain/product/product-quantity";
+import { Exception } from "../../domain/common/Exception";
+import { StatusCode } from "../../domain/common/status-code";
 import { Shop } from "../../domain/shop/Shop";
 import { ContentPage } from "../../domain/shop/content-shop";
-import { HandleCode } from "../common/handleReturn";
 
-interface ISaveShopData {
+interface SaveShopData {
   ownerId: string;
   name: string;
   description: string;
@@ -16,16 +13,6 @@ interface ISaveShopData {
     title: string;
     content: string;
   };
-  products?: [
-    {
-      name: string;
-      price: number;
-      description: string;
-      photo: string;
-      category: string;
-      quantity: number;
-    }
-  ];
 }
 
 export class StoreShop {
@@ -40,13 +27,14 @@ export class StoreShop {
     this.userRepository = userRepository;
   }
 
-  async execute(shopData: ISaveShopData) {
+  async execute(shopData: SaveShopData) {
     try {
-      const owner = await this.userRepository.findById(shopData.ownerId);
-      if (!owner) throw new Error("User not found");
+      const findUser = await this.userRepository.findById(shopData.ownerId);
+      if (!findUser)
+        throw new Exception("User not found", StatusCode.BAD_REQUEST);
 
       const shop = new Shop({
-        owner: owner,
+        ownerId: findUser.getId(),
         name: shopData.name,
         description: shopData.description,
         content: new ContentPage(
@@ -54,23 +42,18 @@ export class StoreShop {
           shopData.content.content
         ),
       });
-      shopData.products?.forEach((product) => {
-        shop.addProduct(
-          new Product({
-            name: new Name(product.name),
-            shopId: shop.id,
-            price: new Price({ price: product.price }),
-            description: new Description(product.description),
-            photo: product.photo,
-            category: product.category,
-            quantity: new Quantity({ quantity: product.quantity }),
-          })
-        );
-      });
-      await this.shopRepository.create(shop);
+      const shopSave = await this.shopRepository.create(shop);
+      
       return {
-        statusCode: HandleCode.CREATED,
-        body: { response: "Your shop created with success" },
+        statusCode: StatusCode.CREATED,
+        body: {
+          response: {
+            id: shopSave.id,
+            name: shopSave.name,
+            description: shopSave.description,
+            content: shopSave.content,
+          },
+        },
       };
     } catch (error: any) {
       return {

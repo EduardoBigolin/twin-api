@@ -1,4 +1,5 @@
-import { Exception, StatusCode } from "../common/Exception";
+import { Exception } from "../common/Exception";
+import { StatusCode } from "../common/status-code";
 
 export class ContentPage {
   public title: string;

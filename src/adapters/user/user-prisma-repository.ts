@@ -2,8 +2,9 @@ import { PrismaClient } from "@prisma/client";
 import { User } from "../../domain/user/User";
 import { Email } from "../../domain/user/User-email";
 import { Password } from "../../domain/user/User-password";
-import { Exception, StatusCode } from "../../domain/common/Exception";
+import { Exception } from "../../domain/common/Exception";
 import { IUserRepository } from "./user-repository";
+import { StatusCode } from "../../domain/common/status-code";
 
 export class UserPrismaRepository implements IUserRepository {
   private prisma = new PrismaClient();
@@ -76,6 +77,7 @@ export class UserPrismaRepository implements IUserRepository {
         id: id,
       },
     });
+
     if (!user) {
       return null;
     }
