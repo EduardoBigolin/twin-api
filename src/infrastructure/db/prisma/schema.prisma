@@ -16,6 +16,7 @@ model User {
   name            String
   password        String
   isAuthenticated Boolean
+  Shop            Shop[]
 }
 
 model Product {
@@ -23,9 +24,19 @@ model Product {
   name        String
   price       Float
   description String
-  photo       String
-  category    String
   quantity    Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  Shop        Shop?    @relation(fields: [shopId], references: [id])
+  shopId      String?
+}
+
+model Shop {
+  id          String    @id
+  owner       User      @relation(fields: [userId], references: [id])
+  userId      String
+  name        String
+  products    Product[]
+  description String
+  content     String
 }

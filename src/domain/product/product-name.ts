@@ -1,4 +1,4 @@
-import { Exaction, StatusCode } from "../common/Exaction";
+import { Exception, StatusCode } from "../common/Exception";
 
 export class Name {
   public name: string;
@@ -8,7 +8,7 @@ export class Name {
   }
   validate(name: string) {
     if (!name) {
-      throw new Exaction("Name is required", StatusCode.BAD_REQUEST);
+      throw new Exception("Name is required", StatusCode.BAD_REQUEST);
     }
   }
 }
@@ -22,7 +22,7 @@ export class Description {
 
   validate(description: string) {
     if (!description) {
-      throw new Exaction("Description is required", StatusCode.BAD_REQUEST);
+      throw new Exception("Description is required", StatusCode.BAD_REQUEST);
     }
   }
 }

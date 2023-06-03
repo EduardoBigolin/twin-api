@@ -1,4 +1,5 @@
-import { Exaction, StatusCode } from "../common/Exaction";
+import { Exception } from "../common/Exception";
+import { StatusCode } from "../common/status-code";
 import { Hash } from "../utils/hash";
 
 export class Password {
@@ -18,11 +19,11 @@ export class Password {
   }
   public validate(password: string) {
     if (!password) {
-      throw new Exaction("Password is required", StatusCode.BAD_REQUEST);
+      throw new Exception("Password is required", StatusCode.BAD_REQUEST);
     }
 
     if (password.length < 8) {
-      throw new Exaction("Invalid password", StatusCode.BAD_REQUEST);
+      throw new Exception("Invalid password", StatusCode.BAD_REQUEST);
     }
   }
 }

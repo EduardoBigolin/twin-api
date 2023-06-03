@@ -1,9 +1,10 @@
 import { IUserRepository } from "../../adapters/user/user-repository";
-import { Exaction, StatusCode } from "../../domain/common/Exaction";
+import { Exception } from "../../domain/common/Exception";
+import { StatusCode } from "../../domain/common/status-code";
 import { User } from "../../domain/user/User";
 import { Email } from "../../domain/user/User-email";
 import { Password } from "../../domain/user/User-password";
-import { HandleCode, HandleReturn } from "../common/handleReturn";
+import { HandleReturn } from "../common/handleReturn";
 import { HandleEmail } from "./services/handle-email";
 import { UserExistEmailService } from "./services/user-exist-email";
 
@@ -34,20 +35,20 @@ export class StoreAccount {
       ).execute(user.email.getEmail());
 
       if (userExists) {
-        throw new Exaction("User already exists", StatusCode.BAD_REQUEST);
+        throw new Exception("User already exists", StatusCode.BAD_REQUEST);
       }
 
       const userCreated = await this.userRepository.create(user);
       const output = {
         user: userCreated,
       };
-      await HandleEmail.createUser({
-        name: user.name,
-        email: user.email.getEmail(),
-        id: user.getId(),
-      });
+      // await HandleEmail.createUser({
+      //   name: user.name,
+      //   email: user.email.getEmail(),
+      //   id: user.getId(),
+      // });
       return {
-        statusCode: HandleCode.CREATED,
+        statusCode: StatusCode.CREATED,
         body: { response: output },
       };
     } catch (error: any) {

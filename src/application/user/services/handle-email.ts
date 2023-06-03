@@ -52,7 +52,6 @@ export class HandleEmail {
 </html>
 `,
     });
-    // console.log("Message sent: %s", info.messageId);
   }
   static async authenticatedUser(payLoad: IAuthenticatedUser) {
     const info = await transporter.sendMail({
@@ -64,6 +63,5 @@ export class HandleEmail {
       <b>Your account has been created</b>
       `,
     });
-    // console.log("Message sent: %s", info.messageId);
   }
 }

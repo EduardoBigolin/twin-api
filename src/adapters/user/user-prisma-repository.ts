@@ -2,10 +2,13 @@ import { PrismaClient } from "@prisma/client";
 import { User } from "../../domain/user/User";
 import { Email } from "../../domain/user/User-email";
 import { Password } from "../../domain/user/User-password";
-import { Exaction, StatusCode } from "../../domain/common/Exaction";
+import { Exception } from "../../domain/common/Exception";
 import { IUserRepository } from "./user-repository";
+import { StatusCode } from "../../domain/common/status-code";
 
 export class UserPrismaRepository implements IUserRepository {
+  private prisma = new PrismaClient();
+
   async updateAuthenticated(id: string): Promise<User> {
     const user = await this.prisma.user.update({
       where: {
@@ -25,7 +28,6 @@ export class UserPrismaRepository implements IUserRepository {
 
     return userReturn;
   }
-  private prisma = new PrismaClient();
 
   async create(user: User): Promise<User> {
     try {
@@ -47,7 +49,7 @@ export class UserPrismaRepository implements IUserRepository {
       });
       return userReturn;
     } catch (error: any) {
-      throw new Exaction(error.message, StatusCode.INTERNAL_SERVER);
+      throw new Exception(error.message, StatusCode.INTERNAL_SERVER);
     }
   }
 
@@ -75,6 +77,7 @@ export class UserPrismaRepository implements IUserRepository {
         id: id,
       },
     });
+
     if (!user) {
       return null;
     }

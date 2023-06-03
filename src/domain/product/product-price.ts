@@ -1,4 +1,5 @@
-import { Exaction, StatusCode } from "../common/Exaction";
+import { Exception } from "../common/Exception";
+import { StatusCode } from "../common/status-code";
 
 export interface IPrice {
   price: number;
@@ -13,13 +14,14 @@ export class Price {
     this.price = payLoad.price;
     this.discount = payLoad.discount ? payLoad.discount : undefined;
   }
+
   validate(payLoad: IPrice) {
     if (!payLoad.price) {
-      throw new Exaction("Price is required", StatusCode.BAD_REQUEST);
+      throw new Exception("Price is required", StatusCode.BAD_REQUEST);
     }
     if (payLoad.discount) {
       if (payLoad.discount > 100) {
-        throw new Exaction(
+        throw new Exception(
           "Discount cannot be more than 100%",
           StatusCode.BAD_REQUEST
         );
@@ -29,7 +31,6 @@ export class Price {
 
   getDiscountedPrice() {
     if (this.discount) {
-      console.log(this.price - (this.price * this.discount) / 100);
       return this.price - (this.price * this.discount) / 100;
     }
     return this.price;
@@ -41,7 +42,7 @@ export class Price {
 
   applyDiscount(discount: number) {
     if (discount > 100 || discount < 0) {
-      throw new Exaction(
+      throw new Exception(
         "Discount cannot be more than 100% or less than 0%",
         StatusCode.BAD_REQUEST
       );

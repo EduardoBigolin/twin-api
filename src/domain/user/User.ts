@@ -1,5 +1,6 @@
 import { Entity } from "../common/Entity";
-import { Exaction, StatusCode } from "../common/Exaction";
+import { Exception } from "../common/Exception";
+import { StatusCode } from "../common/status-code";
 import { Email } from "./User-email";
 import { IUser } from "./User-interface";
 import { Password } from "./User-password";
@@ -26,13 +27,13 @@ export class User extends Entity {
 
   public validate(payLoad: IUser) {
     if (!payLoad.name) {
-      throw new Exaction("User name is required", StatusCode.BAD_REQUEST);
+      throw new Exception("User name is required", StatusCode.BAD_REQUEST);
     }
   }
 
   public getToken() {
     if (!this.isAuthenticated)
-      throw new Exaction("User is not authenticated", StatusCode.UNAUTHORIZED);
+      throw new Exception("User is not authenticated", StatusCode.UNAUTHORIZED);
     this.token = new Token({
       id: this.id,
       name: this.name,

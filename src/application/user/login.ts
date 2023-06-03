@@ -1,6 +1,7 @@
 import { IUserRepository } from "../../adapters/user/user-repository";
-import { Exaction, StatusCode } from "../../domain/common/Exaction";
-import { HandleCode, HandleReturn } from "../common/handleReturn";
+import { Exception } from "../../domain/common/Exception";
+import { StatusCode } from "../../domain/common/status-code";
+import { HandleReturn } from "../common/handleReturn";
 import { UserExistEmailService } from "./services/user-exist-email";
 
 interface userAuth {
@@ -20,12 +21,18 @@ export class Login {
         userData.email
       );
       if (!user) {
-        throw new Exaction("Invalid email or password", StatusCode.BAD_REQUEST);
+        throw new Exception(
+          "Invalid email or password",
+          StatusCode.BAD_REQUEST
+        );
       }
 
       const userAuth = await user.password.comparePassword(userData.password);
       if (!userAuth) {
-        throw new Exaction("Invalid email or password", StatusCode.BAD_REQUEST);
+        throw new Exception(
+          "Invalid email or password",
+          StatusCode.BAD_REQUEST
+        );
       }
       const token = user.getToken();
       const output = {
@@ -39,7 +46,7 @@ export class Login {
       };
 
       return {
-        statusCode: HandleCode.OK,
+        statusCode: StatusCode.OK,
         body: output,
       };
     } catch (error: any) {

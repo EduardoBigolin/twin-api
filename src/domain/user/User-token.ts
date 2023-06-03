@@ -1,4 +1,3 @@
-import { Exaction, StatusCode } from "../common/Exaction";
 import { Jwt } from "../utils/jwt";
 
 export interface userPayLoad {
