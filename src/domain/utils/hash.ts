@@ -10,4 +10,5 @@ export class Hash {
   ): Promise<boolean> {
     return await bcrypt.compare(password, hash);
   }
+  
 }
