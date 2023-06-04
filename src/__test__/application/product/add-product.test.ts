@@ -42,7 +42,7 @@ describe("Shop", async () => {
       price: parseFloat(faker.commerce.price()),
       category: faker.commerce.department(),
       shopId: shop.body.response.id,
-      quantity: faker.number.int(),
+      quantity: faker.number.int({ min: 1, max: 100 }),
     };
     const productRepos = new ProductPrismaRepository();
 
@@ -54,11 +54,9 @@ describe("Shop", async () => {
       quantity: inputProduct.quantity,
     });
 
-    console.log(product);
-
-    // expect(product).toBeDefined();
-    // expect(product).toBeTruthy();
-    // expect(product.statusCode).toBe(200);
-    // expect(product.body).toBe("Product created with success");
+    expect(product).toBeDefined();
+    expect(product).toBeTruthy();
+    expect(product.statusCode).toBe(200);
+    expect(product.body).toBe("Product created with success");
   });
 });

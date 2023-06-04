@@ -11,7 +11,18 @@
     "db:seed": "ts-node ./prisma/seed.ts",
     "db:reset": "npx prisma db push --force-reset && npx prisma db push",
     "server:dev": "npm run db:generate &&  npm run db:reset && tsx --watch src/infrastructure/http/main.ts",
-    "server:run": "tsx src/infrastructure/http/main.ts"
+    "server:run": "tsx src/infrastructure/http/main.ts",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "npm run test"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "prisma": {
     "schema": "./src/infrastructure/db/prisma/schema.prisma"
@@ -27,6 +38,8 @@
     "@types/node": "^20.2.4",
     "@types/nodemailer": "^6.4.8",
     "@types/uuid": "^9.0.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
     "prisma": "^4.14.1",
     "ts-node": "^10.9.1",
     "tsx": "^3.12.7",
