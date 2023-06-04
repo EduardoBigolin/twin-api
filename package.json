@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "vitest",
+    "test": "vitest run --coverage",
     "db:migrate": "npx prisma migrate dev --name init",
     "db:generate": "npx prisma generate",
     "db:studio": "npx prisma studio",
@@ -38,6 +38,7 @@
     "@types/node": "^20.2.4",
     "@types/nodemailer": "^6.4.8",
     "@types/uuid": "^9.0.1",
+    "@vitest/coverage-c8": "^0.31.4",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "prisma": "^4.14.1",
