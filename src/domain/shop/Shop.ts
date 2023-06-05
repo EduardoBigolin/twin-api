@@ -19,6 +19,7 @@ export class Shop extends Entity {
   public content: ContentPage;
   constructor(shop: IShop) {
     super();
+    this.id = shop.id ? shop.id : this.generateId();
     this.validate(shop);
     this.ownerId = shop.ownerId;
     this.name = shop.name;

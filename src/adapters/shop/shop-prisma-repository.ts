@@ -3,31 +3,32 @@ import { Shop } from "../../domain/shop/Shop";
 import { IShopRepository } from "./shop-repository";
 import { Exception } from "../../domain/common/Exception";
 import { StatusCode } from "../../domain/common/status-code";
+import { ContentPage } from "../../domain/shop/content-shop";
 
 export class ShopPrismaRepository implements IShopRepository {
   private prisma = new PrismaClient();
 
   async create(shop: Shop): Promise<Shop> {
-    try {
-      await this.prisma.shop.create({
-        data: {
-          id: shop.id,
-          name: shop.name,
-          description: shop.description,
-          content: JSON.stringify(shop.content),
-          userId: shop.ownerId,
-        },
-      });
-      return new Shop({
+    const SavedShop = await this.prisma.shop.create({
+      data: {
         id: shop.id,
         name: shop.name,
         description: shop.description,
-        content: shop.content,
-        ownerId: shop.ownerId,
-      });
-    } catch (error: any) {
-      throw new Exception(error.message, StatusCode.INTERNAL_SERVER);
-    }
+        content: JSON.stringify(shop.content),
+        userId: shop.ownerId,
+      },
+    });
+
+    return new Shop({
+      id: SavedShop.id,
+      name: SavedShop.name,
+      description: SavedShop.description,
+      content: new ContentPage(
+        JSON.parse(SavedShop.content).title as string,
+        JSON.parse(SavedShop.content).content as string
+      ),
+      ownerId: SavedShop.userId,
+    });
   }
   async update(shop: Shop): Promise<Shop> {
     throw new Error("Method not implemented.");
@@ -39,7 +40,7 @@ export class ShopPrismaRepository implements IShopRepository {
     const shop = await this.prisma.shop.findUnique({
       where: { id },
     });
-    if (!shop) throw new Error("Shop not found");
+    if (!shop) return null;
     return new Shop({
       id: shop.id,
       name: shop.name,
