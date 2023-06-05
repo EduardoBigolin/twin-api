@@ -1,12 +1,12 @@
 import { faker } from "@faker-js/faker";
 import { describe, expect, test } from "vitest";
-import { VerifyUser } from "../../../application/user/verify-user";
-import { StoreAccount } from "../../../application/user/store-account";
-import { UserPrismaRepository } from "../../../adapters/user/user-prisma-repository";
-import { ShopPrismaRepository } from "../../../adapters/shop/shop-prisma-repository";
-import { StoreShop } from "../../../application/shop/store-shop";
-import { SaveProduct } from "../../../application/product/add-product";
 import { ProductPrismaRepository } from "../../../adapters/product/product-prisma-repository";
+import { ShopPrismaRepository } from "../../../adapters/shop/shop-prisma-repository";
+import { UserPrismaRepository } from "../../../adapters/user/user-prisma-repository";
+import { SaveProduct } from "../../../application/product/add-product";
+import { StoreShop } from "../../../application/shop/store-shop";
+import { StoreAccount } from "../../../application/user/store-account";
+import { VerifyUser } from "../../../application/user/verify-user";
 
 describe("Shop", async () => {
   const input = {
@@ -24,6 +24,18 @@ describe("Shop", async () => {
     password: input.password,
   });
 
+  const repos = new ShopPrismaRepository();
+  const userRepos = new UserPrismaRepository();
+
+  const shop = await new StoreShop(repos, userRepos).execute({
+    ownerId: newUser.body.response.user.id,
+    content: {
+      title: faker.lorem.words(),
+      content: faker.lorem.paragraph(),
+    },
+    description: faker.lorem.paragraph(),
+    name: faker.lorem.words(),
+  });
   await new VerifyUser(UserRepos).execute(newUser.body.response.id);
 
   test("Should add product on the shop", async () => {
@@ -36,6 +48,7 @@ describe("Shop", async () => {
       description: faker.lorem.paragraph(),
       name: faker.lorem.words(),
     });
+
     const inputProduct = {
       name: faker.commerce.productName(),
       description: faker.commerce.productDescription(),
@@ -50,13 +63,13 @@ describe("Shop", async () => {
       name: inputProduct.name,
       description: inputProduct.description,
       price: inputProduct.price,
-      shopId: "dcbe7703-57ab-434b-a8ce-fef30797ec09",
+      shopId: shop.body.response.id,
       quantity: inputProduct.quantity,
     });
 
     expect(product).toBeDefined();
     expect(product).toBeTruthy();
     expect(product.statusCode).toBe(200);
-    expect(product.body).toBe("Product created with success");
+    expect(product.body.message).toBe("Product created with success");
   });
 });
