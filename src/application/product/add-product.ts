@@ -6,6 +6,7 @@ import { Product } from "../../domain/product/Product";
 import { Description, Name } from "../../domain/product/product-name";
 import { Price } from "../../domain/product/product-price";
 import { Quantity } from "../../domain/product/product-quantity";
+import { HandleReturn } from "../common/handleReturn";
 
 interface AddProductData {
   id?: string;
@@ -31,6 +32,7 @@ export class SaveProduct {
   async execute(product: AddProductData) {
     try {
       const findShop = await this.shopRepository.getById(product.shopId);
+
       if (!findShop)
         throw new Exception("Shop not found", StatusCode.BAD_REQUEST);
 
@@ -47,7 +49,7 @@ export class SaveProduct {
 
       return {
         statusCode: StatusCode.OK,
-        body: "Product created with success",
+        body: { message: "Product created with success" },
       };
     } catch (error: any) {
       return {
