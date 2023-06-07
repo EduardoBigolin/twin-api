@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { faker } from "@faker-js/faker";
-import { StoreAccount } from "../../application/user/store-account";
-import { UserPrismaRepository } from "../../adapters/user/user-prisma-repository";
+import { StoreAccount } from "../../../application/user/store-account";
+import { UserPrismaRepository } from "../../../adapters/user/user-prisma-repository";
 
 test("Create User with valid data", async () => {
   const input = {

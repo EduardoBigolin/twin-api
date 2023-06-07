@@ -42,12 +42,9 @@ export class StoreShop {
           shopData.content.content
         ),
       });
-      console.log("normal", shop.id);
-      
 
       const shopSave = await this.shopRepository.create(shop);
-      console.log("saved", shopSave.id);
-      
+
       return {
         statusCode: StatusCode.CREATED,
         body: {

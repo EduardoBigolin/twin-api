@@ -1,8 +1,8 @@
 import { describe, expect, test } from "vitest";
 import { faker } from "@faker-js/faker";
-import { StoreAccount } from "../../application/user/store-account";
-import { UserPrismaRepository } from "../../adapters/user/user-prisma-repository";
-import { VerifyUser } from "../../application/user/verify-user";
+import { StoreAccount } from "../../../application/user/store-account";
+import { UserPrismaRepository } from "../../../adapters/user/user-prisma-repository";
+import { VerifyUser } from "../../../application/user/verify-user";
 
 describe("Verify user", async () => {
   const repository = new UserPrismaRepository();
@@ -21,8 +21,8 @@ describe("Verify user", async () => {
     const useCase = await new VerifyUser(repository).execute(
       newUser.body.response.id
     );
-      console.log(useCase.statusCode);
-      
+    console.log(useCase.statusCode);
+
     // expect(useCase).toBeTruthy();
     // expect(useCase.statusCode).toBe(200);
     // expect(useCase.body.response.message).toBe(
@@ -46,7 +46,7 @@ describe("Verify user", async () => {
     const useCase = await new VerifyUser(repository).execute(
       newUser.body.response.id
     );
-      
+
     // expect(useCase).toBeTruthy();
     // expect(useCase.statusCode).toBe(400);
     // expect(useCase.body.response).toBe(`User already authenticated`);

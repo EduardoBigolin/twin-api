@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { environment } from "../../config/environments";
-import { userPayLoad } from "../user/User-token";
+import { userPayLoad } from "../../domain/user/User-token";
 
 export class Jwt {
   public static generateToken(payLoad: userPayLoad) {

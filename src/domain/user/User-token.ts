@@ -1,4 +1,4 @@
-import { Jwt } from "../utils/jwt";
+import { Jwt } from "../../infrastructure/utils/jwt";
 
 export interface userPayLoad {
   id: string;

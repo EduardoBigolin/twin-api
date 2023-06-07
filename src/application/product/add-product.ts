@@ -6,7 +6,6 @@ import { Product } from "../../domain/product/Product";
 import { Description, Name } from "../../domain/product/product-name";
 import { Price } from "../../domain/product/product-price";
 import { Quantity } from "../../domain/product/product-quantity";
-import { HandleReturn } from "../common/handleReturn";
 
 interface AddProductData {
   id?: string;
@@ -49,7 +48,7 @@ export class SaveProduct {
 
       return {
         statusCode: StatusCode.OK,
-        body: { message: "Product created with success" },
+        body: { message: "Product created with success", product: productNew.id },
       };
     } catch (error: any) {
       return {
