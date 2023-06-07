@@ -12,7 +12,7 @@ export class Price {
   constructor(payLoad: IPrice) {
     this.validate(payLoad);
     this.price = payLoad.price;
-    this.discount = payLoad.discount ? payLoad.discount : undefined;
+    this.discount = payLoad.discount ? payLoad.discount : 0;
   }
 
   validate(payLoad: IPrice) {

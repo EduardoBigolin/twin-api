@@ -1,6 +1,6 @@
 import { Exception } from "../common/Exception";
 import { StatusCode } from "../common/status-code";
-import { Hash } from "../utils/hash";
+import { Hash } from "../../infrastructure/utils/hash";
 
 export class Password {
   private password: string;
