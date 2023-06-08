@@ -37,7 +37,7 @@ export class Price {
   }
 
   removeDiscount() {
-    this.discount = undefined;
+    this.discount = 0;
   }
 
   applyDiscount(discount: number) {
