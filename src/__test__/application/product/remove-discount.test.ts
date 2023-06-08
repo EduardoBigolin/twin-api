@@ -68,8 +68,6 @@ describe("Remove discount", async () => {
     const useCase = await new RemoveDiscount(repository).execute(
       product.body.product as string
     );
-    console.log(useCase, product.body.product);
-
     expect(useCase.statusCode).toBe(200);
     expect(useCase.body.response).toBe("Discount removed with success");
   });
