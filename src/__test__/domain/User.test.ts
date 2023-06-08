@@ -1,8 +1,6 @@
-import { expect, test } from "vitest";
 import { faker } from "@faker-js/faker";
+import { expect, test } from "vitest";
 import { User } from "../../domain/user/User";
-import { Email } from "../../domain/user/User-email";
-import { Password } from "../../domain/user/User-password";
 
 test("Create User with valid data", async () => {
   const input = {
@@ -12,8 +10,8 @@ test("Create User with valid data", async () => {
   };
   const user = new User({
     name: input.name,
-    email: new Email(input.email),
-    password: new Password(input.password),
+    email: input.email,
+    password: input.password,
   });
   expect(user).toBeTruthy();
   expect(user.name).toBe(input.name);
@@ -33,8 +31,8 @@ test("Should return error if invalid email", () => {
   expect(() => {
     new User({
       name: input.name,
-      email: new Email(input.email),
-      password: new Password(input.password),
+      email: input.email,
+      password: input.password,
       isAuthenticated: false,
     });
   }).toThrow("Invalid email");
@@ -50,12 +48,11 @@ test("Should return error if password invalid", () => {
   expect(() => {
     new User({
       name: input.name,
-      email: new Email(input.email),
-      password: new Password(input.password),
+      email: input.email,
+      password: input.password,
     });
   }).toThrow("Invalid password");
 });
-import bcrypt from "bcrypt";
 test("Should return password hash if password is valid", async () => {
   const input = {
     name: faker.name.fullName(),
@@ -65,8 +62,8 @@ test("Should return password hash if password is valid", async () => {
 
   const user = new User({
     name: input.name,
-    email: new Email(input.email),
-    password: new Password(input.password),
+    email: input.email,
+    password: input.password,
   });
   await user.password.hashPassword();
   const comparePassword = await user.password.comparePassword(input.password);
@@ -83,8 +80,8 @@ test("Should return error if name is invalid", async () => {
   expect(() => {
     new User({
       name: input.name,
-      email: new Email(input.email),
-      password: new Password(input.password),
+      email: input.email,
+      password: input.password,
     });
   }).toThrow("User name is required");
 });
@@ -99,8 +96,8 @@ test("Create user with Id", async () => {
   const user = new User({
     id: input.id,
     name: input.name,
-    email: new Email(input.email),
-    password: new Password(input.password),
+    email: input.email,
+    password: input.password,
   });
   expect(user).toBeTruthy();
   expect(user.getId()).toBe(input.id);

@@ -6,7 +6,7 @@ import { StatusCode } from "../../domain/common/status-code";
 import { Shop } from "../../domain/shop/Shop";
 import { ContentPage } from "../../domain/shop/content-shop";
 
-interface SaveShopData {
+interface ISaveShop {
   ownerId: string;
   name: string;
   description: string;
@@ -16,19 +16,21 @@ interface SaveShopData {
   };
 }
 
+interface SaveShopRepository {
+  shopRepository: IShopRepository;
+  userRepository: IUserRepository;
+}
+
 export class StoreShop {
   public shopRepository: IShopRepository;
   public userRepository: IUserRepository;
 
-  constructor(
-    shopRepository: IShopRepository,
-    userRepository: IUserRepository
-  ) {
-    this.shopRepository = shopRepository;
-    this.userRepository = userRepository;
+  constructor(repository: SaveShopRepository) {
+    this.shopRepository = repository.shopRepository;
+    this.userRepository = repository.userRepository;
   }
 
-  async execute(shopData: SaveShopData) {
+  async execute(shopData: ISaveShop) {
     try {
       const findUser = await this.userRepository.findById(shopData.ownerId);
       if (!findUser)

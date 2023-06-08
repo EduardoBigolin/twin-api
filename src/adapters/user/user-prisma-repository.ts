@@ -1,10 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { User } from "../../domain/user/User";
-import { Email } from "../../domain/user/User-email";
-import { Password } from "../../domain/user/User-password";
 import { Exception } from "../../domain/common/Exception";
-import { IUserRepository } from "./user-repository";
 import { StatusCode } from "../../domain/common/status-code";
+import { User } from "../../domain/user/User";
+import { IUserRepository } from "./user-repository";
 
 export class UserPrismaRepository implements IUserRepository {
   private prisma = new PrismaClient();
@@ -21,8 +19,8 @@ export class UserPrismaRepository implements IUserRepository {
     const userReturn = new User({
       id: user.id,
       name: user.name,
-      email: new Email(user.email),
-      password: new Password(user.password),
+      email: user.email,
+      password: user.password,
       isAuthenticated: user.isAuthenticated,
     });
 
@@ -43,8 +41,8 @@ export class UserPrismaRepository implements IUserRepository {
       const userReturn = new User({
         id: SavedUser.id,
         name: SavedUser.name,
-        email: new Email(SavedUser.email),
-        password: new Password(SavedUser.password),
+        email: SavedUser.email,
+        password: SavedUser.password,
         isAuthenticated: SavedUser.isAuthenticated,
       });
       return userReturn;
@@ -65,8 +63,8 @@ export class UserPrismaRepository implements IUserRepository {
     const userReturn = new User({
       id: user.id,
       name: user.name,
-      email: new Email(user.email),
-      password: new Password(user.password),
+      email: user.email,
+      password: user.password,
       isAuthenticated: user.isAuthenticated,
     });
     return userReturn;
@@ -84,8 +82,8 @@ export class UserPrismaRepository implements IUserRepository {
     const userReturn = new User({
       id: user.id,
       name: user.name,
-      email: new Email(user.email),
-      password: new Password(user.password),
+      email: user.email,
+      password: user.password,
       isAuthenticated: user.isAuthenticated,
     });
     return userReturn;

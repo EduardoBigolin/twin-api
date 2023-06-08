@@ -20,5 +20,6 @@ export class Email {
     if (!regex.test(email)) {
       throw new Exception("Invalid email", StatusCode.BAD_REQUEST);
     }
+    
   }
 }

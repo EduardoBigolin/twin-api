@@ -1,11 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { ProductRepository } from "./product-repository";
 import { Exception } from "../../domain/common/Exception";
-import { Product } from "../../domain/product/Product";
 import { StatusCode } from "../../domain/common/status-code";
-import { Description, Name } from "../../domain/product/product-name";
-import { Price } from "../../domain/product/product-price";
-import { Quantity } from "../../domain/product/product-quantity";
+import { Product } from "../../domain/product/Product";
+import { ProductRepository } from "./product-repository";
 
 export class ProductPrismaRepository implements ProductRepository {
   private prisma = new PrismaClient();
@@ -27,7 +24,6 @@ export class ProductPrismaRepository implements ProductRepository {
     }
   }
   async update(product: Product): Promise<Product> {
-
     const productSaved = await this.prisma.product.update({
       where: { id: product.id },
       data: {
@@ -39,14 +35,12 @@ export class ProductPrismaRepository implements ProductRepository {
       },
     });
     return new Product({
-      description: new Description(productSaved.description),
+      description: productSaved.description,
       id: productSaved.id,
-      name: new Name(productSaved.name),
-      price: new Price({
-        price: productSaved.price,
-        discount: productSaved.discount,
-      }),
-      quantity: new Quantity({ quantity: productSaved.quantity }),
+      name: productSaved.name,
+      price: productSaved.price,
+      discount: productSaved.discount,
+      quantity: productSaved.quantity,
       shopId: productSaved.shopId,
     });
   }
@@ -59,15 +53,12 @@ export class ProductPrismaRepository implements ProductRepository {
     });
     if (!product) return null;
     return new Product({
-      description: new Description(product.description),
+      description: product.description,
       id: product.id,
-      name: new Name(product.name),
-      price: new Price({
-        price: product.price,
-        discount: product.discount,
-      }),
-
-      quantity: new Quantity({ quantity: product.quantity }),
+      name: product.name,
+      price: product.price,
+      discount: product.discount,
+      quantity: product.quantity,
       shopId: product.shopId,
     });
   }

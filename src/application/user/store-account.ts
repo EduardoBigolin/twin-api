@@ -5,28 +5,30 @@ import { User } from "../../domain/user/User";
 import { Email } from "../../domain/user/User-email";
 import { Password } from "../../domain/user/User-password";
 import { HandleReturn } from "../common/handleReturn";
-import { HandleEmail } from "./services/handle-email";
 import { UserExistEmailService } from "./services/user-exist-email";
 
-interface saveUserDto {
+interface ISaveUser {
   name: string;
   email: string;
   password: string;
+}
+interface SaveUserRepository {
+  userRepository: IUserRepository;
 }
 
 export class StoreAccount {
   public userRepository: IUserRepository;
 
-  constructor(userRepository: IUserRepository) {
-    this.userRepository = userRepository;
+  constructor(repository: SaveUserRepository) {
+    this.userRepository = repository.userRepository;
   }
 
-  async execute(userData: saveUserDto): Promise<HandleReturn> {
+  async execute(userData: ISaveUser): Promise<HandleReturn> {
     try {
       const user = new User({
         name: userData.name,
-        email: new Email(userData.email),
-        password: new Password(userData.password),
+        email: userData.email,
+        password: userData.password,
         isAuthenticated: false,
       });
 
@@ -39,6 +41,7 @@ export class StoreAccount {
       }
 
       const userCreated = await this.userRepository.create(user);
+
       const output = {
         user: userCreated,
       };

@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { Login } from "../../../../../application/user/login";
 import { UserPrismaRepository } from "../../../../../adapters/user/user-prisma-repository";
+import { Login } from "../../../../../application/user";
 
-export class signInController {
+export class SignInController {
   static async execute(req: Request, res: Response) {
     const { email, password } = req.body;
 
-    const repository = new UserPrismaRepository();
-    const useCase = await new Login(repository).execute({
+    const userRepository = new UserPrismaRepository();
+    const useCase = await new Login({ userRepository }).execute({
       email: email,
       password: password,
     });

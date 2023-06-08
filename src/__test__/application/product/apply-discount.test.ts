@@ -16,19 +16,16 @@ describe("Apply discount", async () => {
     password: faker.internet.password(),
   };
 
-  const ShopRepos = new ShopPrismaRepository();
-  const UserRepos = new UserPrismaRepository();
+  const shopRepository = new ShopPrismaRepository();
+  const userRepository = new UserPrismaRepository();
 
-  const newUser = await new StoreAccount(UserRepos).execute({
+  const newUser = await new StoreAccount({ userRepository }).execute({
     name: input.name,
     email: input.email,
     password: input.password,
   });
 
-  const repos = new ShopPrismaRepository();
-  const userRepos = new UserPrismaRepository();
-
-  const shop = await new StoreShop(repos, userRepos).execute({
+  const shop = await new StoreShop({ shopRepository, userRepository }).execute({
     ownerId: newUser.body.response.user.id,
     content: {
       title: faker.lorem.words(),
@@ -37,7 +34,7 @@ describe("Apply discount", async () => {
     description: faker.lorem.paragraph(),
     name: faker.lorem.words(),
   });
-  await new VerifyUser(UserRepos).execute(newUser.body.response.id);
+  await new VerifyUser(userRepository).execute(newUser.body.response.id);
 
   const inputProduct = {
     name: faker.commerce.productName(),
@@ -47,13 +44,13 @@ describe("Apply discount", async () => {
     shopId: shop.body.response.id,
     quantity: faker.number.int({ min: 1, max: 100 }),
   };
-  const productRepos = new ProductPrismaRepository();
+  const productRepository = new ProductPrismaRepository();
 
-  const product = await new SaveProduct(
-    productRepos,
-    ShopRepos,
-    userRepos
-  ).execute({
+  const product = await new SaveProduct({
+    productRepository,
+    shopRepository,
+    userRepository,
+  }).execute({
     userId: newUser.body.response.user.id,
     name: inputProduct.name,
     description: inputProduct.description,

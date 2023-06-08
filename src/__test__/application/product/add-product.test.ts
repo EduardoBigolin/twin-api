@@ -3,10 +3,9 @@ import { describe, expect, test } from "vitest";
 import { ProductPrismaRepository } from "../../../adapters/product/product-prisma-repository";
 import { ShopPrismaRepository } from "../../../adapters/shop/shop-prisma-repository";
 import { UserPrismaRepository } from "../../../adapters/user/user-prisma-repository";
-import { SaveProduct } from "../../../application/product/add-product";
-import { StoreShop } from "../../../application/shop/store-shop";
-import { StoreAccount } from "../../../application/user/store-account";
-import { VerifyUser } from "../../../application/user/verify-user";
+import { SaveProduct } from "../../../application/product";
+import { StoreShop } from "../../../application/shop";
+import { StoreAccount, VerifyUser } from "../../../application/user";
 
 describe("Shop", async () => {
   const input = {
@@ -15,31 +14,21 @@ describe("Shop", async () => {
     password: faker.internet.password(),
   };
 
-  const ShopRepos = new ShopPrismaRepository();
-  const UserRepos = new UserPrismaRepository();
+  const shopRepository = new ShopPrismaRepository();
+  const userRepository = new UserPrismaRepository();
 
-  const newUser = await new StoreAccount(UserRepos).execute({
+  const newUser = await new StoreAccount({ userRepository }).execute({
     name: input.name,
     email: input.email,
     password: input.password,
   });
-
-  const repos = new ShopPrismaRepository();
-  const userRepos = new UserPrismaRepository();
-
-  const shop = await new StoreShop(repos, userRepos).execute({
-    ownerId: newUser.body.response.user.id,
-    content: {
-      title: faker.lorem.words(),
-      content: faker.lorem.paragraph(),
-    },
-    description: faker.lorem.paragraph(),
-    name: faker.lorem.words(),
-  });
-  await new VerifyUser(UserRepos).execute(newUser.body.response.id);
+  await new VerifyUser(userRepository).execute(newUser.body.response.id);
 
   test("Should add product on the shop", async () => {
-    const shop = await new StoreShop(ShopRepos, UserRepos).execute({
+    const shop = await new StoreShop({
+      shopRepository,
+      userRepository,
+    }).execute({
       ownerId: newUser.body.response.user.id,
       content: {
         title: faker.lorem.words(),
@@ -57,13 +46,13 @@ describe("Shop", async () => {
       shopId: shop.body.response.id,
       quantity: faker.number.int({ min: 1, max: 100 }),
     };
-    const productRepos = new ProductPrismaRepository();
+    const productRepository = new ProductPrismaRepository();
 
-    const product = await new SaveProduct(
-      productRepos,
-      ShopRepos,
-      userRepos
-    ).execute({
+    const product = await new SaveProduct({
+      productRepository,
+      shopRepository,
+      userRepository,
+    }).execute({
       userId: newUser.body.response.user.id,
       name: inputProduct.name,
       description: inputProduct.description,

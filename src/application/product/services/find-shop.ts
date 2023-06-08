@@ -2,22 +2,23 @@ import { Redis } from "ioredis";
 import { IShopRepository } from "../../../adapters/shop/shop-repository";
 import { IUserRepository } from "../../../adapters/user/user-repository";
 
-interface FindShopData {
+interface IFindShop {
   shopId: string;
   userId: string;
+}
+interface FindShopRepository {
+  shopRepository: IShopRepository;
+  userRepository: IUserRepository;
 }
 
 export class FindShop {
   private shopRepository: IShopRepository;
   private userRepository: IUserRepository;
-  constructor(
-    shopRepository: IShopRepository,
-    userRepository: IUserRepository
-  ) {
-    this.shopRepository = shopRepository;
-    this.userRepository = userRepository;
+  constructor(repository: FindShopRepository) {
+    this.shopRepository = repository.shopRepository;
+    this.userRepository = repository.userRepository;
   }
-  async execute(data: FindShopData) {
+  async execute(data: IFindShop) {
     const redisFind = await new Redis().get(data.shopId);
 
     if (redisFind) {

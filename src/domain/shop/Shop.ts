@@ -2,6 +2,7 @@ import { Entity } from "../common/Entity";
 import { Product } from "../product/Product";
 import { ContentPage } from "./content-shop";
 
+
 interface IShop {
   id?: string;
   ownerId: string;
