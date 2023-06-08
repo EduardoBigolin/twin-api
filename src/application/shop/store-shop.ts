@@ -1,3 +1,4 @@
+import { Redis } from "../../adapters/redis/redis";
 import { IShopRepository } from "../../adapters/shop/shop-repository";
 import { IUserRepository } from "../../adapters/user/user-repository";
 import { Exception } from "../../domain/common/Exception";
@@ -44,6 +45,11 @@ export class StoreShop {
       });
 
       const shopSave = await this.shopRepository.create(shop);
+
+      await new Redis().set(
+        shopSave.id,
+        JSON.stringify({ shop: shopSave.id, user: findUser.id })
+      );
 
       return {
         statusCode: StatusCode.CREATED,

@@ -49,7 +49,12 @@ describe("Apply discount", async () => {
   };
   const productRepos = new ProductPrismaRepository();
 
-  const product = await new SaveProduct(productRepos, ShopRepos).execute({
+  const product = await new SaveProduct(
+    productRepos,
+    ShopRepos,
+    userRepos
+  ).execute({
+    userId: newUser.body.response.user.id,
     name: inputProduct.name,
     description: inputProduct.description,
     price: inputProduct.price,

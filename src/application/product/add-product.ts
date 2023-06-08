@@ -1,11 +1,13 @@
 import { ProductRepository } from "../../adapters/product/product-repository";
 import { IShopRepository } from "../../adapters/shop/shop-repository";
+import { IUserRepository } from "../../adapters/user/user-repository";
 import { Exception } from "../../domain/common/Exception";
 import { StatusCode } from "../../domain/common/status-code";
 import { Product } from "../../domain/product/Product";
 import { Description, Name } from "../../domain/product/product-name";
 import { Price } from "../../domain/product/product-price";
 import { Quantity } from "../../domain/product/product-quantity";
+import { FindShop } from "./services/find-shop";
 
 interface AddProductData {
   id?: string;
@@ -16,21 +18,28 @@ interface AddProductData {
   category?: string;
   photo?: string;
   shopId: string;
+  userId: string;
 }
 
 export class SaveProduct {
   private productRepository: ProductRepository;
   private shopRepository: IShopRepository;
+  private userRepository: IUserRepository;
   constructor(
     productRepository: ProductRepository,
-    shopRepository: IShopRepository
+    shopRepository: IShopRepository,
+    userRepository: IUserRepository
   ) {
     this.productRepository = productRepository;
     this.shopRepository = shopRepository;
+    this.userRepository = userRepository;
   }
   async execute(product: AddProductData) {
     try {
-      const findShop = await this.shopRepository.getById(product.shopId);
+      const findShop = await new FindShop(
+        this.shopRepository,
+        this.userRepository
+      ).execute({ shopId: product.shopId, userId: product.userId });
 
       if (!findShop)
         throw new Exception("Shop not found", StatusCode.BAD_REQUEST);
@@ -48,7 +57,10 @@ export class SaveProduct {
 
       return {
         statusCode: StatusCode.OK,
-        body: { message: "Product created with success", product: productNew.id },
+        body: {
+          message: "Product created with success",
+          product: productNew.id,
+        },
       };
     } catch (error: any) {
       return {
