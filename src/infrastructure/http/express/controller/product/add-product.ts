@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { ProductPrismaRepository } from "../../../../../adapters/product/product-prisma-repository";
 import { ShopPrismaRepository } from "../../../../../adapters/shop/shop-prisma-repository";
-import { SaveProduct } from "../../../../../application/product/add-product";
 import { UserPrismaRepository } from "../../../../../adapters/user/user-prisma-repository";
+import { SaveProduct } from "../../../../../application/product";
 
 export class AddProductController {
   static async execute(req: Request, res: Response) {
@@ -10,15 +10,14 @@ export class AddProductController {
     const { shopId } = req.params;
     const { id } = req.user;
 
-    const repository = new ProductPrismaRepository();
+    const productRepository = new ProductPrismaRepository();
     const shopRepository = new ShopPrismaRepository();
     const userRepository = new UserPrismaRepository();
-    console.time();
-    const useCase = await new SaveProduct(
-      repository,
+    const useCase = await new SaveProduct({
+      productRepository,
       shopRepository,
-      userRepository
-    ).execute({
+      userRepository,
+    }).execute({
       name: name,
       description: description,
       price: parseFloat(price),
@@ -28,7 +27,6 @@ export class AddProductController {
       shopId: shopId,
       userId: id,
     });
-    console.timeEnd();
     return res.status(useCase.statusCode).json(useCase.body);
   }
 }

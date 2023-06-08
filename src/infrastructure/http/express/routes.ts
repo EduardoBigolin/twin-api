@@ -1,12 +1,16 @@
 import { Router } from "express";
-import { signUpController } from "./controller/user/sign-up";
-import { signInController } from "./controller/user/sign-in";
-import { VerifyAccountController } from "./controller/user/account";
-import { CreateShopController } from "./controller/shop/create-shop";
+import {
+  AddProductController,
+  ApplyDiscountController,
+  RemoveDiscountController,
+} from "./controller/product";
+import { CreateShopController } from "./controller/shop";
+import {
+  SignInController,
+  SignUpController,
+  VerifyAccountController,
+} from "./controller/user";
 import { AuthMiddleware } from "./middleware/auth";
-import { AddProductController } from "./controller/product/add-product";
-import { ApplyDiscountController } from "./controller/product/apply-discount";
-import { RemoveDiscountController } from "./controller/product/remove-discount";
 
 const routes = Router();
 
@@ -17,8 +21,8 @@ routes.get("/", (req, res) => {
 });
 
 // USERS
-routes.post("/user", signUpController.execute);
-routes.post("/user/login", signInController.execute);
+routes.post("/user", SignUpController.execute);
+routes.post("/user/login", SignInController.execute);
 routes.get("/user/verify/:id", VerifyAccountController.execute);
 
 // SHOP

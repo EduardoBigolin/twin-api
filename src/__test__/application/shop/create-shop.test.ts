@@ -13,19 +13,22 @@ describe("Create shop", async () => {
     password: faker.internet.password(),
   };
 
-  const repository = new UserPrismaRepository();
+  const userRepository = new UserPrismaRepository();
 
-  const newUser = await new StoreAccount(repository).execute({
+  const newUser = await new StoreAccount({ userRepository }).execute({
     name: input.name,
     email: input.email,
     password: input.password,
   });
-  await new VerifyUser(repository).execute(newUser.body.response.id);
+
+  await new VerifyUser(userRepository).execute(newUser.body.response.id);
 
   test("should return error if user is invalid", async () => {
-    const repos = new ShopPrismaRepository();
-    const userRepos = new UserPrismaRepository();
-    const useCase = await new StoreShop(repos, userRepos).execute({
+    const shopRepository = new ShopPrismaRepository();
+    const useCase = await new StoreShop({
+      shopRepository,
+      userRepository,
+    }).execute({
       ownerId: "Invalid",
       content: {
         title: faker.lorem.words(),
@@ -41,10 +44,11 @@ describe("Create shop", async () => {
   });
 
   test("create shop", async () => {
-    const repos = new ShopPrismaRepository();
-    const userRepos = new UserPrismaRepository();
-
-    const useCase = await new StoreShop(repos, userRepos).execute({
+    const shopRepository = new ShopPrismaRepository();
+    const useCase = await new StoreShop({
+      shopRepository,
+      userRepository,
+    }).execute({
       ownerId: newUser.body.response.user.id,
       content: {
         title: faker.lorem.words(),
@@ -53,7 +57,6 @@ describe("Create shop", async () => {
       description: faker.lorem.paragraph(),
       name: faker.lorem.words(),
     });
-
     expect(useCase).toBeDefined();
     expect(useCase).toBeTruthy();
     expect(useCase.statusCode).toBe(201);

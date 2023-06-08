@@ -4,12 +4,9 @@ import { IUserRepository } from "../../adapters/user/user-repository";
 import { Exception } from "../../domain/common/Exception";
 import { StatusCode } from "../../domain/common/status-code";
 import { Product } from "../../domain/product/Product";
-import { Description, Name } from "../../domain/product/product-name";
-import { Price } from "../../domain/product/product-price";
-import { Quantity } from "../../domain/product/product-quantity";
 import { FindShop } from "./services/find-shop";
 
-interface AddProductData {
+interface IAddProduct {
   id?: string;
   name: string;
   description: string;
@@ -20,37 +17,38 @@ interface AddProductData {
   shopId: string;
   userId: string;
 }
+interface SaveProductRepository {
+  productRepository: ProductRepository;
+  shopRepository: IShopRepository;
+  userRepository: IUserRepository;
+}
 
 export class SaveProduct {
   private productRepository: ProductRepository;
   private shopRepository: IShopRepository;
   private userRepository: IUserRepository;
-  constructor(
-    productRepository: ProductRepository,
-    shopRepository: IShopRepository,
-    userRepository: IUserRepository
-  ) {
-    this.productRepository = productRepository;
-    this.shopRepository = shopRepository;
-    this.userRepository = userRepository;
+  constructor(repository: SaveProductRepository) {
+    this.productRepository = repository.productRepository;
+    this.shopRepository = repository.shopRepository;
+    this.userRepository = repository.userRepository;
   }
-  async execute(product: AddProductData) {
+  async execute(product: IAddProduct) {
     try {
-      const findShop = await new FindShop(
-        this.shopRepository,
-        this.userRepository
-      ).execute({ shopId: product.shopId, userId: product.userId });
+      const findShop = await new FindShop({
+        shopRepository: this.shopRepository,
+        userRepository: this.userRepository,
+      }).execute({ shopId: product.shopId, userId: product.userId });
 
       if (!findShop)
         throw new Exception("Shop not found", StatusCode.BAD_REQUEST);
 
       const productNew = new Product({
-        name: new Name(product.name),
-        description: new Description(product.description),
-        price: new Price({ price: product.price }),
+        name: product.name,
+        description: product.description,
+        price: product.price,
         photo: product.photo,
         shopId: product.shopId,
-        quantity: new Quantity({ quantity: product.quantity }),
+        quantity: product.quantity,
       });
 
       await this.productRepository.create(productNew);

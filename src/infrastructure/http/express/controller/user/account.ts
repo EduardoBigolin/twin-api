@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserPrismaRepository } from "../../../../../adapters/user/user-prisma-repository";
-import { VerifyUser } from "../../../../../application/user/verify-user";
+import { VerifyUser } from "../../../../../application/user";
 
 export class VerifyAccountController {
   static async execute(req: Request, res: Response) {

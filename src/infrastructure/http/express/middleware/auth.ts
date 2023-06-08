@@ -5,7 +5,6 @@ interface AuthPayload {
   id: string;
   name: string;
   email: string;
-  // Add any additional payload properties you need
 }
 
 declare global {

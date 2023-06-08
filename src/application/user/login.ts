@@ -4,18 +4,22 @@ import { StatusCode } from "../../domain/common/status-code";
 import { HandleReturn } from "../common/handleReturn";
 import { UserExistEmailService } from "./services/user-exist-email";
 
-interface userAuth {
+interface IUserAuth {
   email: string;
   password: string;
+}
+
+interface LoginRepository {
+  userRepository: IUserRepository;
 }
 
 export class Login {
   public userRepository: IUserRepository;
 
-  constructor(userRepository: IUserRepository) {
-    this.userRepository = userRepository;
+  constructor(repository: LoginRepository) {
+    this.userRepository = repository.userRepository;
   }
-  async execute(userData: userAuth): Promise<HandleReturn> {
+  async execute(userData: IUserAuth): Promise<HandleReturn> {
     try {
       const user = await new UserExistEmailService(this.userRepository).execute(
         userData.email

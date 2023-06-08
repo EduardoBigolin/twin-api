@@ -5,13 +5,14 @@ import { Quantity } from "./product-quantity";
 
 export interface IProduct {
   id?: string;
-  name: Name;
+  name: string;
   shopId: string;
-  price: Price;
-  description: Description;
+  price: number;
+  description: string;
   photo?: string;
   category?: string;
-  quantity: Quantity;
+  quantity: number;
+  discount?: number;
 }
 
 export class Product extends Entity {
@@ -26,12 +27,15 @@ export class Product extends Entity {
   constructor(payLoad: IProduct) {
     super();
     this.id = payLoad.id ? payLoad.id : this.id;
-    this.name = payLoad.name;
+    this.name = new Name(payLoad.name);
     this.shopId = payLoad.shopId;
-    this.price = payLoad.price;
-    this.description = payLoad.description;
+    this.price = new Price({
+      price: payLoad.price,
+      discount: payLoad.discount ? payLoad.discount : 0,
+    });
+    this.description = new Description(payLoad.description);
     this.photo = payLoad.photo;
     this.category = payLoad.category;
-    this.quantity = payLoad.quantity;
+    this.quantity = new Quantity({ quantity: payLoad.quantity });
   }
 }

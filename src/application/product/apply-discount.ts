@@ -2,7 +2,7 @@ import { ProductRepository } from "../../adapters/product/product-repository";
 import { Exception } from "../../domain/common/Exception";
 import { StatusCode } from "../../domain/common/status-code";
 
-interface Discount {
+interface IApplyDiscount {
   productId: string;
   discount: number;
 }
@@ -14,7 +14,7 @@ export class ApplyDiscount {
     this.productRepository = productRepository;
   }
 
-  async execute(data: Discount) {
+  async execute(data: IApplyDiscount) {
     try {
       const product = await this.productRepository.getById(data.productId);
       if (!product)
@@ -26,7 +26,7 @@ export class ApplyDiscount {
 
       return {
         statusCode: StatusCode.OK,
-        body: { response: "Discount applied with success" },
+        body: { response: "Discount applied with success", result },
       };
     } catch (error: any) {
       return {
