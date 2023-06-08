@@ -23,7 +23,6 @@ export class ApplyDiscount {
       product.price.applyDiscount(data.discount);
 
       const result = await this.productRepository.update(product);
-      console.log(result);
 
       return {
         statusCode: StatusCode.OK,
