@@ -27,7 +27,6 @@ export class ProductPrismaRepository implements ProductRepository {
     }
   }
   async update(product: Product): Promise<Product> {
-    console.log("pre-save", product);
 
     const productSaved = await this.prisma.product.update({
       where: { id: product.id },

@@ -21,7 +21,6 @@ describe("Verify user", async () => {
     const useCase = await new VerifyUser(repository).execute(
       newUser.body.response.id
     );
-    console.log(useCase.statusCode);
 
     // expect(useCase).toBeTruthy();
     // expect(useCase.statusCode).toBe(200);

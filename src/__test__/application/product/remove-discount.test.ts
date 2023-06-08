@@ -4,11 +4,13 @@ import { ProductPrismaRepository } from "../../../adapters/product/product-prism
 import { ShopPrismaRepository } from "../../../adapters/shop/shop-prisma-repository";
 import { UserPrismaRepository } from "../../../adapters/user/user-prisma-repository";
 import { SaveProduct } from "../../../application/product/add-product";
+import { ApplyDiscount } from "../../../application/product/apply-discount";
 import { StoreShop } from "../../../application/shop/store-shop";
 import { StoreAccount } from "../../../application/user/store-account";
 import { VerifyUser } from "../../../application/user/verify-user";
+import { RemoveDiscount } from "../../../application/product/remove-discount";
 
-describe("Shop", async () => {
+describe("Remove discount", async () => {
   const input = {
     name: faker.name.fullName(),
     email: faker.internet.email(),
@@ -38,43 +40,40 @@ describe("Shop", async () => {
   });
   await new VerifyUser(UserRepos).execute(newUser.body.response.id);
 
-  test("Should add product on the shop", async () => {
-    const shop = await new StoreShop(ShopRepos, UserRepos).execute({
-      ownerId: newUser.body.response.user.id,
-      content: {
-        title: faker.lorem.words(),
-        content: faker.lorem.paragraph(),
-      },
-      description: faker.lorem.paragraph(),
-      name: faker.lorem.words(),
+  const inputProduct = {
+    name: faker.commerce.productName(),
+    description: faker.commerce.productDescription(),
+    price: parseFloat(faker.commerce.price()),
+    category: faker.commerce.department(),
+    shopId: shop.body.response.id,
+    quantity: faker.number.int({ min: 1, max: 100 }),
+  };
+  const productRepos = new ProductPrismaRepository();
+
+  const product = await new SaveProduct(
+    productRepos,
+    ShopRepos,
+    userRepos
+  ).execute({
+    userId: newUser.body.response.user.id,
+    name: inputProduct.name,
+    description: inputProduct.description,
+    price: inputProduct.price,
+    shopId: shop.body.response.id,
+    quantity: inputProduct.quantity,
+  });
+
+  test("Apply discount with all data is valid", async () => {
+    const repository = new ProductPrismaRepository();
+    const discount = faker.number.float({ min: 0, max: 100 });
+    await new ApplyDiscount(repository).execute({
+      productId: product.body.product as string,
+      discount: discount,
     });
-
-    const inputProduct = {
-      name: faker.commerce.productName(),
-      description: faker.commerce.productDescription(),
-      price: parseFloat(faker.commerce.price()),
-      category: faker.commerce.department(),
-      shopId: shop.body.response.id,
-      quantity: faker.number.int({ min: 1, max: 100 }),
-    };
-    const productRepos = new ProductPrismaRepository();
-
-    const product = await new SaveProduct(
-      productRepos,
-      ShopRepos,
-      userRepos
-    ).execute({
-      userId: newUser.body.response.user.id,
-      name: inputProduct.name,
-      description: inputProduct.description,
-      price: inputProduct.price,
-      shopId: shop.body.response.id,
-      quantity: inputProduct.quantity,
-    });
-
-    expect(product).toBeDefined();
-    expect(product).toBeTruthy();
-    expect(product.statusCode).toBe(200);
-    expect(product.body.message).toBe("Product created with success");
+    const useCase = await new RemoveDiscount(repository).execute(
+      product.body.product as string
+    );
+    expect(useCase.statusCode).toBe(200);
+    expect(useCase.body.response).toBe("Discount removed with success");
   });
 });

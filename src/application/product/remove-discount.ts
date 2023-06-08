@@ -2,31 +2,26 @@ import { ProductRepository } from "../../adapters/product/product-repository";
 import { Exception } from "../../domain/common/Exception";
 import { StatusCode } from "../../domain/common/status-code";
 
-interface Discount {
-  productId: string;
-  discount: number;
-}
-
-export class ApplyDiscount {
+export class RemoveDiscount {
   private productRepository: ProductRepository;
-
   constructor(productRepository: ProductRepository) {
     this.productRepository = productRepository;
   }
 
-  async execute(data: Discount) {
+  async execute(productId: string) {
     try {
-      const product = await this.productRepository.getById(data.productId);
+      const product = await this.productRepository.getById(productId);
+
       if (!product)
-        throw new Exception("Product not found", StatusCode.NOT_FOUND);
+        throw new Exception("Product not found", StatusCode.BAD_REQUEST);
 
-      product.price.applyDiscount(data.discount);
+      product.price.removeDiscount();
 
-      const result = await this.productRepository.update(product);
+      await this.productRepository.update(product);
 
       return {
         statusCode: StatusCode.OK,
-        body: { response: "Discount applied with success" },
+        body: { response: "Discount removed with success" },
       };
     } catch (error: any) {
       return {
