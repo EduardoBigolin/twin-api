@@ -5,23 +5,24 @@ import { StoreAccount } from "../../../application/user/store-account";
 import { VerifyUser } from "../../../application/user/verify-user";
 import { ShopPrismaRepository } from "../../../infrastructure/db/prisma/shop-prisma-repository";
 import { UserPrismaRepository } from "../../../infrastructure/db/prisma/user-prisma-repository";
+import { Setup } from "../setup";
 
 describe("Create shop", async () => {
-  const input = {
-    name: faker.name.fullName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-  };
+  // const input = {
+  //   name: faker.name.fullName(),
+  //   email: faker.internet.email(),
+  //   password: faker.internet.password(),
+  // };
 
   const userRepository = new UserPrismaRepository();
 
-  const newUser = await new StoreAccount({ userRepository }).execute({
-    name: input.name,
-    email: input.email,
-    password: input.password,
-  });
+  // const newUser = await new StoreAccount({ userRepository }).execute({
+  //   name: input.name,
+  //   email: input.email,
+  //   password: input.password,
+  // });
 
-  await new VerifyUser(userRepository).execute(newUser.body.response.id);
+  // await new VerifyUser(userRepository).execute(newUser.body.response.id);
 
   test("should return error if user is invalid", async () => {
     const shopRepository = new ShopPrismaRepository();
@@ -49,7 +50,7 @@ describe("Create shop", async () => {
       shopRepository,
       userRepository,
     }).execute({
-      ownerId: newUser.body.response.user.id,
+      ownerId: (await Setup.getValidUser()).body.response.user.id,
       content: {
         title: faker.lorem.words(),
         content: faker.lorem.paragraph(),
@@ -60,5 +61,5 @@ describe("Create shop", async () => {
     expect(useCase).toBeDefined();
     expect(useCase).toBeTruthy();
     expect(useCase.statusCode).toBe(201);
-  }, 10000);
+  });
 });

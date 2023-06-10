@@ -1,6 +1,6 @@
 import { Redis } from "ioredis";
-import { IShopRepository } from "../../../adapters/shop/shop-repository";
-import { IUserRepository } from "../../../adapters/user/user-repository";
+import { IShopRepository } from "../../../domain/shop/shop-repository";
+import { IUserRepository } from "../../../domain/user/user-repository";
 
 interface IFindShop {
   shopId: string;
@@ -31,6 +31,7 @@ export class FindShop {
     }
 
     const findShop = await this.shopRepository.getById(data.shopId);
+
     const findUser = await this.userRepository.findById(data.userId);
     if (!findShop || !findUser) {
       return null;
