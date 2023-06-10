@@ -1,9 +1,9 @@
-import { ProductRepository } from "../../adapters/product/product-repository";
-import { IShopRepository } from "../../adapters/shop/shop-repository";
-import { IUserRepository } from "../../adapters/user/user-repository";
 import { Exception } from "../../domain/common/Exception";
 import { StatusCode } from "../../domain/common/status-code";
 import { Product } from "../../domain/product/Product";
+import { ProductRepository } from "../../domain/product/product-repository";
+import { IShopRepository } from "../../domain/shop/shop-repository";
+import { IUserRepository } from "../../domain/user/user-repository";
 import { FindShop } from "./services/find-shop";
 
 interface IAddProduct {

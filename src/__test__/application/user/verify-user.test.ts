@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker";
 import { describe, expect, test } from "vitest";
-import { UserPrismaRepository } from "../../../adapters/user/user-prisma-repository";
 import { StoreAccount } from "../../../application/user/store-account";
 import { VerifyUser } from "../../../application/user/verify-user";
+import { UserPrismaRepository } from "../../../infrastructure/db/prisma/user-prisma-repository";
 
 describe("Verify user", async () => {
   const userRepository = new UserPrismaRepository();

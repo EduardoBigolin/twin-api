@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { Exception } from "../../domain/common/Exception";
-import { StatusCode } from "../../domain/common/status-code";
-import { User } from "../../domain/user/User";
-import { IUserRepository } from "./user-repository";
+import { Exception } from "../../../domain/common/Exception";
+import { StatusCode } from "../../../domain/common/status-code";
+import { User } from "../../../domain/user/User";
+import { IUserRepository } from "../../../domain/user/user-repository";
 
 export class UserPrismaRepository implements IUserRepository {
   private prisma = new PrismaClient();

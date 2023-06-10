@@ -1,10 +1,10 @@
-import { Redis } from "../../adapters/redis/redis";
-import { IShopRepository } from "../../adapters/shop/shop-repository";
-import { IUserRepository } from "../../adapters/user/user-repository";
+import { Redis } from "ioredis";
 import { Exception } from "../../domain/common/Exception";
 import { StatusCode } from "../../domain/common/status-code";
 import { Shop } from "../../domain/shop/Shop";
 import { ContentPage } from "../../domain/shop/content-shop";
+import { IShopRepository } from "../../domain/shop/shop-repository";
+import { IUserRepository } from "../../domain/user/user-repository";
 
 interface ISaveShop {
   ownerId: string;

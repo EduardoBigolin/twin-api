@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { ProductPrismaRepository } from "../../../../../adapters/product/product-prisma-repository";
-import { ShopPrismaRepository } from "../../../../../adapters/shop/shop-prisma-repository";
-import { UserPrismaRepository } from "../../../../../adapters/user/user-prisma-repository";
 import { SaveProduct } from "../../../../../application/product";
+import { ProductPrismaRepository } from "../../../../db/prisma/product-prisma-repository";
+import { ShopPrismaRepository } from "../../../../db/prisma/shop-prisma-repository";
+import { UserPrismaRepository } from "../../../../db/prisma/user-prisma-repository";
 
 export class AddProductController {
   static async execute(req: Request, res: Response) {

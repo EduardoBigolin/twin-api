@@ -1,9 +1,7 @@
-import { PrismaClient, Product } from "@prisma/client";
-import { Shop } from "../../domain/shop/Shop";
-import { IShopRepository } from "./shop-repository";
-import { Exception } from "../../domain/common/Exception";
-import { StatusCode } from "../../domain/common/status-code";
-import { ContentPage } from "../../domain/shop/content-shop";
+import { PrismaClient } from "@prisma/client";
+import { Shop } from "../../../domain/shop/Shop";
+import { ContentPage } from "../../../domain/shop/content-shop";
+import { IShopRepository } from "../../../domain/shop/shop-repository";
 
 export class ShopPrismaRepository implements IShopRepository {
   private prisma = new PrismaClient();

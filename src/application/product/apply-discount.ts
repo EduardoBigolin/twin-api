@@ -1,6 +1,6 @@
-import { ProductRepository } from "../../adapters/product/product-repository";
 import { Exception } from "../../domain/common/Exception";
 import { StatusCode } from "../../domain/common/status-code";
+import { ProductRepository } from "../../domain/product/product-repository";
 
 interface IApplyDiscount {
   productId: string;

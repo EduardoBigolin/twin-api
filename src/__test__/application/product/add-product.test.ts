@@ -1,11 +1,11 @@
 import { faker } from "@faker-js/faker";
 import { describe, expect, test } from "vitest";
-import { ProductPrismaRepository } from "../../../adapters/product/product-prisma-repository";
-import { ShopPrismaRepository } from "../../../adapters/shop/shop-prisma-repository";
-import { UserPrismaRepository } from "../../../adapters/user/user-prisma-repository";
 import { SaveProduct } from "../../../application/product";
 import { StoreShop } from "../../../application/shop";
 import { StoreAccount, VerifyUser } from "../../../application/user";
+import { ShopPrismaRepository } from "../../../infrastructure/db/prisma/shop-prisma-repository";
+import { UserPrismaRepository } from "../../../infrastructure/db/prisma/user-prisma-repository";
+import { ProductPrismaRepository } from "../../../infrastructure/db/prisma/product-prisma-repository";
 
 describe("Shop", async () => {
   const input = {

@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { Exception } from "../../domain/common/Exception";
-import { StatusCode } from "../../domain/common/status-code";
-import { Product } from "../../domain/product/Product";
-import { ProductRepository } from "./product-repository";
+import { Exception } from "../../../domain/common/Exception";
+import { StatusCode } from "../../../domain/common/status-code";
+import { Product } from "../../../domain/product/Product";
+import { ProductRepository } from "../../../domain/product/product-repository";
 
 export class ProductPrismaRepository implements ProductRepository {
   private prisma = new PrismaClient();
