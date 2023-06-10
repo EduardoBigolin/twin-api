@@ -11,25 +11,27 @@ datasource db {
 }
 
 model User {
-  id              String  @id
-  email           String  @unique
+  id              String    @id
+  email           String    @unique
   name            String
   password        String
   isAuthenticated Boolean
   Shop            Shop[]
+  Comment         Comment[]
 }
 
 model Product {
-  id          String   @id
+  id          String    @id
   name        String
   price       Float
   discount    Float
   description String
   quantity    Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  Shop        Shop     @relation(fields: [shopId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Shop        Shop      @relation(fields: [shopId], references: [id])
   shopId      String
+  Comment     Comment[]
 }
 
 model Shop {
@@ -40,4 +42,13 @@ model Shop {
   products    Product[]
   description String
   content     String
+}
+
+model Comment {
+  id        String  @id
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  content   String
 }

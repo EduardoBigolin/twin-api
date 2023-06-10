@@ -1,6 +1,6 @@
-import { IUserRepository } from "../../adapters/user/user-repository";
 import { Exception } from "../../domain/common/Exception";
 import { StatusCode } from "../../domain/common/status-code";
+import { IUserRepository } from "../../domain/user/user-repository";
 
 export class VerifyUser {
   public userRepository: IUserRepository;
@@ -11,7 +11,7 @@ export class VerifyUser {
   public async execute(id: string) {
     try {
       const user = await this.userRepository.findById(id);
-      
+
       if (!user) {
         throw new Exception("User not found", StatusCode.BAD_REQUEST);
       }

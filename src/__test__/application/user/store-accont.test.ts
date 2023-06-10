@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { describe, expect, test } from "vitest";
-import { UserPrismaRepository } from "../../../adapters/user/user-prisma-repository";
 import { StoreAccount } from "../../../application/user/store-account";
+import { UserPrismaRepository } from "../../../infrastructure/db/prisma/user-prisma-repository";
 
 describe("Create User", async () => {
   const userRepository = new UserPrismaRepository();
@@ -19,7 +19,7 @@ describe("Create User", async () => {
     });
 
     expect(useCase).toBeTruthy();
-    
+
     expect(useCase.statusCode).toBe(201);
     expect(useCase.body.response).toBeTypeOf("object");
   });

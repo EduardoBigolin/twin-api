@@ -1,6 +1,6 @@
-import { IUserRepository } from "../../adapters/user/user-repository";
 import { Exception } from "../../domain/common/Exception";
 import { StatusCode } from "../../domain/common/status-code";
+import { IUserRepository } from "../../domain/user/user-repository";
 import { HandleReturn } from "../common/handleReturn";
 import { UserExistEmailService } from "./services/user-exist-email";
 

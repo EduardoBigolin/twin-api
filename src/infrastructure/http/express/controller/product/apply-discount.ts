@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { ProductPrismaRepository } from "../../../../../adapters/product/product-prisma-repository";
 import { ApplyDiscount } from "../../../../../application/product";
+import { ProductPrismaRepository } from "../../../../db/prisma/product-prisma-repository";
 
 export class ApplyDiscountController {
   public static async execute(req: Request, res: Response) {
