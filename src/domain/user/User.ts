@@ -21,7 +21,6 @@ export class User extends Entity {
   public isAuthenticated: boolean;
 
   constructor(payLoad: IUser) {
-    
     super();
     this.validate(payLoad);
     this.id = payLoad.id ? payLoad.id : this.id;

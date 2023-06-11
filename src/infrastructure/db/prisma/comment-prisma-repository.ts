@@ -1,10 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import { CommentRepository } from "../../../domain/comment/comment-repository";
 import { Comment } from "../../../domain/comment/Comment";
+import { PrismaRepository } from "./Prisma-repository";
 
-export class CommentPrismaRepository implements CommentRepository {
-  private prisma = new PrismaClient();
-
+export class CommentPrismaRepository
+  extends PrismaRepository
+  implements CommentRepository
+{
   async create(comment: Comment) {
     const saved = await this.prisma.comment.create({
       data: {

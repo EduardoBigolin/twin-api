@@ -12,6 +12,8 @@ import {
 } from "./controller/user";
 import { AuthMiddleware } from "./middleware/auth";
 import { AddCommentController } from "./controller/comment/add-comment";
+import { CreateCartController } from "./controller/cart/create-cart";
+import { AddProductCartController } from "./controller/cart/add-product-cart";
 
 const routes = Router();
 
@@ -45,11 +47,24 @@ routes.post(
   AuthMiddleware.authenticate,
   RemoveDiscountController.execute
 );
+
 // ADD COMMENT
 routes.post(
   "/comment/:productId",
   AuthMiddleware.authenticate,
   AddCommentController.execute
+);
+
+// CART
+routes.post(
+  "/cart",
+  AuthMiddleware.authenticate,
+  CreateCartController.execute
+);
+routes.post(
+  "/cart/product",
+  AuthMiddleware.authenticate,
+  AddProductCartController.execute
 );
 
 export { routes };
