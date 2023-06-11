@@ -1,11 +1,17 @@
-import { PrismaClient } from "@prisma/client";
 import { Exception } from "../../../domain/common/Exception";
 import { StatusCode } from "../../../domain/common/status-code";
 import { Product } from "../../../domain/product/Product";
 import { ProductRepository } from "../../../domain/product/product-repository";
+import { PrismaRepository } from "./Prisma-repository";
 
-export class ProductPrismaRepository implements ProductRepository {
-  private prisma = new PrismaClient();
+export class ProductPrismaRepository
+  extends PrismaRepository
+  implements ProductRepository
+{
+  constructor() {
+    super();
+  }
+
   async create(product: Product): Promise<void> {
     try {
       await this.prisma.product.create({

@@ -11,6 +11,7 @@ import {
   VerifyAccountController,
 } from "./controller/user";
 import { AuthMiddleware } from "./middleware/auth";
+import { AddCommentController } from "./controller/comment/add-comment";
 
 const routes = Router();
 
@@ -43,6 +44,12 @@ routes.post(
   "/product/apply-discount",
   AuthMiddleware.authenticate,
   RemoveDiscountController.execute
+);
+// ADD COMMENT
+routes.post(
+  "/comment/:productId",
+  AuthMiddleware.authenticate,
+  AddCommentController.execute
 );
 
 export { routes };

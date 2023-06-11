@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { ShopPrismaRepository } from "../../../../../adapters/shop/shop-prisma-repository";
-import { UserPrismaRepository } from "../../../../../adapters/user/user-prisma-repository";
 import { StoreShop } from "../../../../../application/shop";
+import { ShopPrismaRepository } from "../../../../db/prisma/shop-prisma-repository";
+import { UserPrismaRepository } from "../../../../db/prisma/user-prisma-repository";
 
 export class CreateShopController {
   static async execute(req: Request, res: Response) {

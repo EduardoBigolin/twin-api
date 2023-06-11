@@ -2,9 +2,15 @@ import { PrismaClient } from "@prisma/client";
 import { Shop } from "../../../domain/shop/Shop";
 import { ContentPage } from "../../../domain/shop/content-shop";
 import { IShopRepository } from "../../../domain/shop/shop-repository";
+import { PrismaRepository } from "./Prisma-repository";
 
-export class ShopPrismaRepository implements IShopRepository {
-  private prisma = new PrismaClient();
+export class ShopPrismaRepository
+  extends PrismaRepository
+  implements IShopRepository
+{
+  constructor() {
+    super();
+  }
 
   async create(shop: Shop): Promise<Shop> {
     const SavedShop = await this.prisma.shop.create({
