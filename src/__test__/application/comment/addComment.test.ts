@@ -15,11 +15,11 @@ test("comment", async () => {
     comment: faker.lorem.paragraph(),
   };
 
-  const comment = await new AddComment(
+  const comment = await new AddComment({
     commentRepository,
     userRepository,
-    productRepository
-  ).execute(input);
+    productRepository,
+  }).execute(input);
 
   expect(comment).toBeTruthy();
   expect(comment.statusCode).toBe(200);
