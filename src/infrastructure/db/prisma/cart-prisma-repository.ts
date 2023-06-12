@@ -46,12 +46,24 @@ export class CartPrismaRepository
         name: data.name,
         userId: data.userId,
         Cart_Item: {
-          create: data.items.map((item) => {
+          updateMany: await Promise.all(data.items.map(async (item) => {
+            return {
+              where: {
+                productId: item.id,
+              },
+              data: {
+                quantity: item.quantity,
+              },
+            };
+          })),
+          create: await Promise.all(data.items.filter((item) => {
+            return !item.id; // Filtra itens que não possuem um ID
+          }).map(async (item) => {
             return {
               productId: item.id,
               quantity: item.quantity,
             };
-          })
+          }))
         }
       },
       create: {
@@ -59,8 +71,9 @@ export class CartPrismaRepository
         name: data.name,
         userId: data.userId,
       },
-
     });
+
+
   }
 
   async addProduct(cart: Cart): Promise<void> {
