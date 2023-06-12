@@ -1,4 +1,5 @@
 import transporter from "../../../config/mail";
+import { serverRabbitmq } from "../../../infrastructure/db/rabbitmq/connect";
 
 interface createUserEmail {
   name: string;
@@ -12,7 +13,7 @@ interface IAuthenticatedUser {
 
 export class HandleEmail {
   static async createUser(payLoad: createUserEmail) {
-    const info = await transporter.sendMail({
+    const info = {
       from: "'support twin' <support@twin.com>",
       to: payLoad.email,
       subject: "Account created",
@@ -51,7 +52,9 @@ export class HandleEmail {
 </body>
 </html>
 `,
-    });
+    };
+    await serverRabbitmq.publishInQueue("EmailMessage", JSON.stringify(info));
+    await serverRabbitmq.consumeEmails("EmailMessage");
   }
   static async authenticatedUser(payLoad: IAuthenticatedUser) {
     const info = await transporter.sendMail({

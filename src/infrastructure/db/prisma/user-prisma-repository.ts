@@ -1,11 +1,16 @@
-import { PrismaClient } from "@prisma/client";
 import { Exception } from "../../../domain/common/Exception";
 import { StatusCode } from "../../../domain/common/status-code";
 import { User } from "../../../domain/user/User";
 import { IUserRepository } from "../../../domain/user/user-repository";
+import { PrismaRepository } from "./Prisma-repository";
 
-export class UserPrismaRepository implements IUserRepository {
-  private prisma = new PrismaClient();
+export class UserPrismaRepository
+  extends PrismaRepository
+  implements IUserRepository
+{
+  constructor() {
+    super();
+  }
 
   async updateAuthenticated(id: string): Promise<User> {
     const user = await this.prisma.user.update({

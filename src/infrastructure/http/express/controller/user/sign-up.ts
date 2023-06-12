@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { UserPrismaRepository } from "../../../../../adapters/user/user-prisma-repository";
 import { StoreAccount } from "../../../../../application/user";
+import { UserPrismaRepository } from "../../../../db/prisma/user-prisma-repository";
 
 export class SignUpController {
   static async execute(req: Request, res: Response) {

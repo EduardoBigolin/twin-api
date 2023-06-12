@@ -11,12 +11,22 @@ interface CommentData {
   comment: string;
 }
 
+interface RepositoryComment {
+  readonly commentRepository: CommentRepository;
+  readonly userRepository: IUserRepository;
+  readonly productRepository: ProductRepository;
+}
+
 export class AddComment {
-  constructor(
-    private readonly commentRepository: CommentRepository,
-    private readonly userRepository: IUserRepository,
-    private readonly productRepository: ProductRepository
-  ) {}
+  private readonly commentRepository: CommentRepository;
+  private readonly userRepository: IUserRepository;
+  private readonly productRepository: ProductRepository;
+
+  constructor(repository: RepositoryComment) {
+    this.commentRepository = repository.commentRepository;
+    this.userRepository = repository.userRepository;
+    this.productRepository = repository.productRepository;
+  }
 
   public async execute(data: CommentData) {
     try {

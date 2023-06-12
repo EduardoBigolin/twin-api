@@ -26,8 +26,7 @@ export class Setup {
     const shopRepository = new ShopPrismaRepository();
     const userRepository = new UserPrismaRepository();
     const productRepository = new ProductPrismaRepository();
-    const user = await Setup.getValidUser();
-    const shop = await Setup.getShop();
+    const shop = await this.getShop();
 
     const product = await new SaveProduct({
       productRepository,
@@ -48,6 +47,7 @@ export class Setup {
     const shopRepository = new ShopPrismaRepository();
     const userRepository = new UserPrismaRepository();
     const user = await Setup.getValidUser();
+
     const shop = await new StoreShop({
       shopRepository,
       userRepository,
