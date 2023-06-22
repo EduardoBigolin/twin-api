@@ -41,8 +41,16 @@ export class StoreAccount {
       const userCreated = await this.userRepository.create(user);
 
       const output = {
-        user: userCreated,
+        user: {
+          id: userCreated.id,
+          name: userCreated.name,
+          email: userCreated.email.getEmail(),
+          isAuthenticated: userCreated.isAuthenticated
+        },
+        error: false,
+        message: "User created with success"
       };
+
       // await HandleEmail.createUser({
       //   name: user.name,
       //   email: user.email.getEmail(),
@@ -55,7 +63,12 @@ export class StoreAccount {
     } catch (error: any) {
       return {
         statusCode: error.statusCode,
-        body: { response: error.message },
+        body: {
+          response: {
+            message: error.message,
+            error: true
+          }
+        },
       };
     }
   }

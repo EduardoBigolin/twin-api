@@ -33,13 +33,14 @@ export class VerifyUser {
         body: {
           response: {
             message: `User ${user.name} authenticated successfully`,
+            error: false,
           },
         },
       };
     } catch (error: any) {
       return {
         statusCode: error.statusCode,
-        body: { response: error.message },
+        body: { response: { message: error.message, error: false } },
       };
     }
   }

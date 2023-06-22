@@ -1,19 +1,15 @@
 version: '3'
 services:
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    container_name: 'rabbitmq'
-    environment:
-      - RABBITMQ_DEFAULT_USER=dev
-      - RABBITMQ_DEFAULT_PASS=senhadev
-    ports:
-      - 5672:5672
-      - 15672:15672
+  postgres:
+    image: postgres
     volumes:
-      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-    networks:
-      - rabbitmq_go_net
+      - ./01-basegeografica.sql:/docker-entrypoint-initdb.d/01-basegeografica.sql
+      - ./02-basegeografica.sql:/docker-entrypoint-initdb.d/02-basegeografica.sql
+    environment:
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_USER: "admin"
+    ports:
+      - "5432:5432"
   redis:
     image: redis:latest
     ports:
