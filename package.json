@@ -11,18 +11,7 @@
     "db:seed": "ts-node ./prisma/seed.ts",
     "db:reset": "npx prisma db push --force-reset && npx prisma db push",
     "server:dev": "npm run db:generate &&  npm run db:reset && tsx --watch src/infrastructure/http/main.ts",
-    "server:run": "tsx --watch src/infrastructure/http/main.ts",
-    "prepare": "husky install"
-  },
-  "lint-staged": {
-    "*.{js,jsx}": [
-      "npm run test"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "server:run": "tsx --watch src/infrastructure/http/main.ts"
   },
   "prisma": {
     "schema": "./src/infrastructure/db/prisma/schema.prisma"
