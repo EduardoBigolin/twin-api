@@ -49,6 +49,6 @@ describe("Verify user", async () => {
 
     expect(useCase).toBeTruthy();
     expect(useCase.statusCode).toBe(400);
-    expect(useCase.body.response).toBe(`User already authenticated`);
+    expect(useCase.body.response.message).toBe(`User already authenticated`);
   });
 });

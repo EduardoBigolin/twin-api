@@ -6,10 +6,11 @@ services:
       - ./01-basegeografica.sql:/docker-entrypoint-initdb.d/01-basegeografica.sql
       - ./02-basegeografica.sql:/docker-entrypoint-initdb.d/02-basegeografica.sql
     environment:
-      POSTGRES_PASSWORD: "admin"
-      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_ROOT_PASSWORD: admin
     ports:
-      - "5432:5432"
+      - 5432:5432
   redis:
     image: redis:latest
     ports:

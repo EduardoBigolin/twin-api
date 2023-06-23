@@ -8,14 +8,13 @@ export class ShopPrismaRepository
   extends PrismaRepository
   implements IShopRepository
 {
-  constructor() {
+    constructor() {
     super();
   }
 
   async create(shop: Shop): Promise<Shop> {
     const SavedShop = await this.prisma.shop.create({
       data: {
-        id: shop.id,
         name: shop.name,
         description: shop.description,
         content: JSON.stringify(shop.content),

@@ -61,6 +61,8 @@ export class StoreAccount {
         body: { response: output },
       };
     } catch (error: any) {
+      console.log(error);
+      
       return {
         statusCode: error.statusCode,
         body: {

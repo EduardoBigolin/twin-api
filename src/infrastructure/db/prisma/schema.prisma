@@ -6,13 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id              String    @id
-  email           String    @unique
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  email           String  @unique
   name            String
   password        String
   isAuthenticated Boolean
@@ -20,9 +20,9 @@ model User {
 }
 
 model Shop {
-  id          String    @id
-  owner       User      @relation(fields: [userId], references: [id])
-  userId      String
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  owner       User   @relation(fields: [userId], references: [id])
+  userId      String @db.ObjectId
   name        String
   description String
   content     String

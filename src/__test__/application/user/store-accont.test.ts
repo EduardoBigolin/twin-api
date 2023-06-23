@@ -36,7 +36,7 @@ describe("Create User", async () => {
       password: input.password,
     });
     expect(useCase.statusCode).toBe(400);
-    expect(useCase.body.response).toBe("Invalid email");
+    expect(useCase.body.response.message).toBe("Invalid email");
   });
 
   test("Create User with valid data", async () => {
@@ -52,6 +52,6 @@ describe("Create User", async () => {
     });
     expect(useCase.statusCode).toBe(400);
 
-    expect(useCase.body.response).toBe("Invalid password");
+    expect(useCase.body.response.message).toBe("Invalid password");
   });
 });

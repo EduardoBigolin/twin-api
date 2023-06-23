@@ -11,7 +11,8 @@
     "db:seed": "ts-node ./prisma/seed.ts",
     "db:reset": "npx prisma db push --force-reset && npx prisma db push",
     "server:dev": "npm run db:generate &&  npm run db:reset && tsx --watch src/infrastructure/http/main.ts",
-    "server:run": "tsx --watch src/infrastructure/http/main.ts"
+    "server:run": "tsx src/infrastructure/http/main.ts",
+    "run": "tsx ./index.ts"
   },
   "prisma": {
     "schema": "./src/infrastructure/db/prisma/schema.prisma"

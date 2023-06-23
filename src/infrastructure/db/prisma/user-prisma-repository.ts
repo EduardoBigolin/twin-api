@@ -36,7 +36,6 @@ export class UserPrismaRepository
     try {
       const SavedUser = await this.prisma.user.create({
         data: {
-          id: user.getId(),
           name: user.name,
           email: user.email.getEmail(),
           password: await user.password.hashPassword(),
